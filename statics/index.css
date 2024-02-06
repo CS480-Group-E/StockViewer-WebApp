@@ -1,9 +1,8 @@
 body {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
   height: 100vh;
-  margin: 0;
+  margin-left: 50;
 }
 
 #container{
@@ -17,25 +16,41 @@ body {
 }
 
 #top_section{
-  margin-top: auto;
+  margin-top: 20px;
   gap: 20px;
+
+}
+
+#top-line{
+  display: flex;
+  margin-top: 10px;
+}
+
+#logo{
+  width: 100px;
+  height: 100px;
+
+}
+
+#stock_panels{
+
 }
 
 .card-container {
   display: grid;
   margin-top: center;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
 }
 
 .card {
-  width: 100px;
+  width: 200px;
   /* Adjust as needed */
-  height: 150px;
+  height: 100px;
   /* Adjust as needed */
   border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
+  border-radius: 10px;
+  background-color: #fff
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
