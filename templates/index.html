@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename = '/index.css')}}">
+    <title>Stock Viewer</title>
+
+</head>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .card-container {
+        display: grid;
+        margin-top: auto;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(7, 1fr);
+        gap: 10px;
+    }
+
+    .card {
+        width: 100px;
+        /* Adjust as needed */
+        height: 150px;
+        /* Adjust as needed */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+    }
+</style>
+
+<body>
+
+
+    <header>
+        <h1>StockViewer</h1>
+        <button onclick="window.location.href='index.html'">Home</button>
+        <button onclick="window.location.href='about.html'">About</button>
+    </header>
+
+    <div class="card-container">
+        <div class="card">Card 1</div>
+        <div class="card">Card 2</div>
+        <div class="card">Card 3</div>
+        <div class="card">Card 4</div>
+        <div class="card">Card 5</div>
+        <div class="card">Card 6</div>
+        <div class="card">Card 7</div>
+        <div class="card">Card 8</div>
+        <div class="card">Card 9</div>
+    </div>
+
+</body>
+
+</html>
