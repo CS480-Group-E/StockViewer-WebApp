@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../statics/index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <title>Stock Viewer</title>
 
 </head>
@@ -14,7 +14,7 @@
     <div="container">
         <div id="top-section">
             <div id="top-line">
-                <img src="../statics/images/moneyBagImage.jpg" alt="Logo" id="logo" width="100" height="100">
+                <img src="../static/images/moneyBagImage.jpg" alt="Logo" id="logo" width="100" height="100">
                 <h1>StockViewer</h1>
             </div>
             <button onclick="window.location.href='index.html'">Home</button>
