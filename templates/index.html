@@ -6,47 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <title>Stock Viewer</title>
-
 </head>
 
 <body>
-
-    <div="container">
+    <div class="container">
         <div id="top-section">
             <div id="top-line">
-                <img src="../static/images/moneyBagImage.jpg" alt="Logo" id="logo" width="100" height="100">
+                <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
                 <h1>StockViewer</h1>
             </div>
-            <button onclick="window.location.href='index.html'">Home</button>
-            <button onclick="window.location.href='about.html'">About</button>
+            <button onclick="window.location.href='/';">Home</button>
+            <button onclick="window.location.href='/about';">About</button>
             <div id="options">
-                <!-- Add your navigation or options here -->
                 <a href="#">Option 1</a> |
                 <a href="#">Option 2</a> |
                 <a href="#">Option 3</a>
             </div>
         </div>
 
-
         <div id="stock-panels">
             <h3>All stocks</h3>
             <div class="card-container">
-                <li class="card" href="#">Card 1</li>
-                <li class="card" href="#">Card 2</li>
-                <li class="card" href="#">Card 3</li>
-                <li class="card" href="#">Card 4</li>
-                <li class="card" href="#">Card 5</li>
-                <li class="card" href="#">Card 6</li>
-                <li class="card" href="#">Card 7</li>
-                <li class="card" href="#">Card 8</li>
-                <li class="card" href="#">Card 9</li>
-                <li class="card" href="#">Card 10</li>
-                <li class="card" href="#">Card 11</li>
-                <li class="card" href="#">Card 12</li>
+                <div class="card">Card 1</div>
+                <div class="card">Card 2</div>
+                <div class="card">Card 3</div>
+                <div class="card">Card 4</div>
+                <div class="card">Card 5</div>
+                <div class="card">Card 6</div>
+                <div class="card">Card 7</div>
+                <div class="card">Card 8</div>
+                <div class="card">Card 9</div>
+                <div class="card">Card 10</div>
+                <div class="card">Card 11</div>
+                <div class="card">Card 12</div>
+                <!-- Add more cards if necessary -->
+                <div class="card">Card 13</div>
+                <div class="card">Card 14</div>
+                <div class="card">Card 15</div>
+                <div class="card">Card 16</div>
+                <div class="card">Card 17</div>
+                <div class="card">Card 18</div>
+                <div class="card">Card 19</div>
+                <div class="card">Card 20</div>
+                <div class="card">Card 21</div>
+                <div class="card">Card 22</div>
+                <div class="card">Card 23</div>
+                <div class="card">Card 24</div>
+                <!-- ... -->
             </div>
         </div>
-        </div>
-
+    </div>
 </body>
 
 </html>

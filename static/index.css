@@ -1,59 +1,75 @@
 body {
-  display: flex;
   font-family: Arial, Helvetica, sans-serif;
-  height: 100vh;
-  margin-left: 50;
+  margin: 0;
+  padding: 0;
+  background-color: #1E1E1E; /* Dark background color */
+  color: white;
+  height: 100vh; /* Body takes full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents scrolling on the body */
 }
 
-#container{
+.container {
+  width: 90%; /* Adjust based on your preference */
+  max-width: 1200px;
+  margin: 20px auto; /* Centers the container with margin on top and bottom */
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 40px); /* Full height minus the margin */
+  border: 2px solid #2D46B9; /* Border color as per the mockup */
+  border-radius: 10px;
+  background-color: #2D46B9; /* Background color as per the mockup */
+  overflow: auto; /* Allows scrolling within the container */
+}
+
+#top-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px; /* Adds space between elements */
 }
 
-#stock_panels{
-  gap: 5px;
+#stock-panels {
+  flex-grow: 1; /* Allows this section to grow and fill available space */
+  overflow: auto; /* Enables scrolling for this section only */
 }
 
-#top_section{
-  margin-top: 20px;
-  gap: 20px;
-
-}
-
-#top-line{
+#top-line {
   display: flex;
-  margin-top: 10px;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center items vertically */
 }
 
-#logo{
-  width: 100px;
-  height: 100px;
-
-}
-
-#stock_panels{
-
+#logo {
+  width: 50px; /* Smaller width for the icon */
+  height: auto; /* Keeps the aspect ratio of the image */
+  margin: 10px; /* Adds a little space around the logo */
 }
 
 .card-container {
   display: grid;
-  margin-top: center;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+  grid-gap: 20px;
+  padding: 20px;
 }
 
 .card {
-  width: 200px;
-  /* Adjust as needed */
-  height: 100px;
-  /* Adjust as needed */
-  border: 1px solid #ccc;
+  background-color: #3A60E4; /* Card background color */
+  border: 1px solid #2D46B9; /* Card border color */
   border-radius: 10px;
-  background-color: #fff
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
+  height: 150px; /* Fixed height for cards */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for cards */
+}
+
+.card:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Hover effect shadow */
+  transform: translateY(-5px); /* Lifts card up slightly */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
