@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1E1E1E; /* Dark background color */
+    color: white;
+    height: 100vh; /* Body takes full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevents scrolling on the body */
+  }
+  
+  .container {
+    width: calc(100% - 8%); /* Subtracting 8% from each side */
+    height: calc(100vh - 10%); /* Subtracting 5% from top and bottom */
+    margin: 5% 4%; /* Top and bottom margins are 5%, side margins are 8% */
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #2D46B9; /* Border color as per the mockup */
+    border-radius: 10px;
+    background-color: #2D46B9; /* Background color as per the mockup */
+    overflow: auto; /* Allows scrolling within the container */
+  }
+  
+  #top-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Adds space between elements */
+  }
+  
+  #stock-panels h3 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300; /* Use a lighter, thinner weight for a more professional look */
+    font-size: 42px; /* Adjust the size as needed */
+    text-align: left;
+    margin-bottom: 20px;
+    color: #ffffff; /* Optional: Adjust the color to fit your design, if needed */
+  }
+  
+  /* Top Navigation Bar Styles */
+  #top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #2D46B9; /* Match the container background or choose a different color */
+    border-bottom: 1px solid #3A60E4; /* Optional: if you want a border under the nav */
+    width: 100%; /* Ensure nav bar extends full width */
+  }
+  
+  #nav-options button,
+  #nav-options a {
+    margin-right: 20px; /* Space between navigation items */
+    color: white; /* Text color for better visibility */
+    text-decoration: none; /* Remove underline from links */
+    background: none; /* Remove button background */
+    border: none; /* Remove button border */
+    font-family: 'Roboto Condensed', sans-serif; /* Use the same font for consistency */
+  }
+  
+  #nav-options button:hover,
+  #nav-options a:hover {
+    text-decoration: underline; /* Add underline on hover for visual feedback */
+  }
+  
+  #top-line {
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center items vertically */
+  }
+  
+  #logo {
+    width: 50px; /* Smaller width for the icon */
+    height: auto; /* Keeps the aspect ratio of the image */
+    margin: 10px; /* Adds a little space around the logo */
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    grid-gap: 20px;
+    padding: 20px;
+  }
+  
+  .card {
+    background-color: #3A60E4; /* Card background color */
+    border: 1px solid #2D46B9; /* Card border color */
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Fixed height for cards */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for cards */
+  }
+  
+  .card:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Hover effect shadow */
+    transform: translateY(-5px); /* Lifts card up slightly */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
