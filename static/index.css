@@ -39,6 +39,32 @@ body {
   color: #ffffff; /* Optional: Adjust the color to fit your design, if needed */
 }
 
+/* Top Navigation Bar Styles */
+#top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Adjust padding as needed */
+  background-color: #2D46B9; /* Match the container background or choose a different color */
+  border-bottom: 1px solid #3A60E4; /* Optional: if you want a border under the nav */
+  width: 100%; /* Ensure nav bar extends full width */
+}
+
+#nav-options button,
+#nav-options a {
+  margin-right: 20px; /* Space between navigation items */
+  color: white; /* Text color for better visibility */
+  text-decoration: none; /* Remove underline from links */
+  background: none; /* Remove button background */
+  border: none; /* Remove button border */
+  font-family: 'Roboto Condensed', sans-serif; /* Use the same font for consistency */
+}
+
+#nav-options button:hover,
+#nav-options a:hover {
+  text-decoration: underline; /* Add underline on hover for visual feedback */
+}
+
 #top-line {
   display: flex;
   justify-content: center; /* Center the content horizontally */
