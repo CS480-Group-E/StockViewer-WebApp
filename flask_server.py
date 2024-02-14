@@ -3,10 +3,13 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+stock_tickers = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'FB', 'TSLA', 'BRK.A', 'V', 'JNJ', 'WMT']
+
+
 # Landing page
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', stock_tickers=stock_tickers)
 
 
 # About page

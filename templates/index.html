@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
     <title>Stock Viewer</title>
 </head>
-
 <body>
     <div class="container">
         <!-- Top Navigation Bar -->
@@ -26,32 +24,11 @@
         <div id="stock-panels">
             <h3>All stocks</h3>
             <div class="card-container">
-            <div class="card">Card 1</div>
-            <div class="card">Card 2</div>
-            <div class="card">Card 3</div>
-            <div class="card">Card 4</div>
-            <div class="card">Card 5</div>
-            <div class="card">Card 6</div>
-            <div class="card">Card 7</div>
-            <div class="card">Card 8</div>
-            <div class="card">Card 9</div>
-            <div class="card">Card 10</div>
-            <div class="card">Card 11</div>
-            <div class="card">Card 12</div>
-            <div class="card">Card 13</div>
-            <div class="card">Card 14</div>
-            <div class="card">Card 15</div>
-            <div class="card">Card 16</div>
-            <div class="card">Card 17</div>
-            <div class="card">Card 18</div>
-            <div class="card">Card 19</div>
-            <div class="card">Card 20</div>
-            <div class="card">Card 21</div>
-            <div class="card">Card 22</div>
-            <div class="card">Card 23</div>
-            <div class="card">Card 24</div>
+                {% for ticker in stock_tickers %}
+                    <div class="card">{{ ticker }}</div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>
-
 </html>
