@@ -14,6 +14,7 @@
         <!-- Top Navigation Bar -->
         <nav id="top-nav">
             <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
+            <h1>StockViewer WebApp</h1>
             <div id="nav-options">
                 <button onclick="window.location.href='/';">Home</button>
                 <button onclick="window.com.location.href='/about';">About</button>
@@ -30,6 +31,7 @@
         <h3>Stock Directory</h3>
 
         <div id="stock-panels">
+            <h3>All Stocks</h3>
             <div class="card-container">
                 {% for ticker in stock_tickers %}
                 <div class="card">
