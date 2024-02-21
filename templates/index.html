@@ -5,28 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
-    <title>Stock Viewer</title>
+    <title>StockViewer WebApp</title>
 </head>
 <body>
     <div class="container">
         <!-- Top Navigation Bar -->
         <nav id="top-nav">
             <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-            <div id="nav-options">
-                <button onclick="window.location.href='/';">Home</button>
-                <button onclick="window.location.href='/about';">About</button>
-                <a href="#">Option 1</a> |
-                <a href="#">Option 2</a> |
-                <a href="#">Option 3</a>
-            </div>
+        <div id="nav-options">
+            <button onclick="window.location.href='/';">Home</button>
+            <button onclick="window.com.location.href='/about';">About</button>
+            <select id="sort-options" onchange="window.location.href=this.value;">
+                <option value="/">Select Sort Order</option>
+                <option value="/sort?by=name">Alphabetical</option>
+                <option value="/sort?by=current_price">Current Price</option>
+                <option value="/sort?by=volume">Volume</option>
+                <option value="/sort?by=close_price">Close Price</option>
+            </select>
+        </div>
+
         </nav>
 
         <div id="stock-panels">
             <h3>All stocks</h3>
             <div class="card-container">
-                {% for ticker in stock_tickers %}
-                    <div class="card">{{ ticker }}</div>
-                {% endfor %}
+            {% for ticker in stock_tickers %}
+                <div class="card">
+                    <p>{{ ticker }}</p>
+                    <p>Current Price: {{ stock_prices[ticker] }}</p>
+                </div>
+            {% endfor %}
             </div>
         </div>
     </div>

@@ -12,3 +12,9 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+lib*
+.env
+*.cfg
+bin/
+
