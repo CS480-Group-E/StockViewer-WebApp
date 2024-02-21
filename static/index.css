@@ -2,104 +2,122 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #1E1E1E; /* Dark background color */
+  background-color: #1E1E1E;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-x: hidden; /* Hide horizontal overflow */
+  overflow-x: hidden;
 }
 
 .container {
-  width: calc(100% - 8%); /* Subtracting 8% from each side */
-  margin-top: 5%; /* Adjust top margin to space under sticky nav */
+  width: calc(100% - 8%);
+  margin-top: 5%;
   display: flex;
   flex-direction: column;
-  border: 2px solid #2D46B9; /* Border color as per the mockup */
+  border: 2px solid #2D46B9;
   border-radius: 10px;
-  background-color: #2D46B9; /* Background color as per the mockup */
-  overflow: visible; /* Allows scrolling within the container */
-  padding-bottom: 20px; /* Add some padding at the bottom */
+  background-color: #2D46B9;
+  overflow: visible;
+  padding-bottom: 20px;
 }
 
 #top-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* Adds space between elements */
+  gap: 20px;
 }
 
 #stock-panels h3 {
   font-family: 'Roboto Condensed', sans-serif;
-  font-weight: 300; /* Use a lighter, thinner weight for a more professional look */
-  font-size: 42px; /* Adjust the size as needed */
+  font-weight: 300;
+  font-size: 42px;
   text-align: left;
   margin-bottom: 20px;
-  color: #ffffff; /* Optional: Adjust the color to fit your design, if needed */
+  color: #ffffff;
 }
 
-/* Top Navigation Bar Styles */
 #top-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2D46B9; /* Match the container background or choose a different color */
-  border-bottom: 1px solid #3A60E4; /* Optional: if you want a border under the nav */
-  width: 100%; /* Ensure nav bar extends full width */
-  position: sticky; /* Makes the navigation bar stick to the top of the viewport */
-  top: 0; /* Set the top position to align with the viewport's top */
-  z-index: 1000; /* Ensure the nav bar is above other content */
+  background-color: #2D46B9;
+  border-bottom: 1px solid #3A60E4;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 #nav-options button,
 #nav-options  {
-  margin-right: 20px; /* Space between navigation items */
-  color: white; /* Text color for better visibility */
-  text-decoration: none; /* Remove underline from links */
-  background: none; /* Remove button background */
-  border: none; /* Remove button border */
-  font-family: 'Roboto Condensed', sans-serif; /* Use the same font for consistency */
+  margin-right: 20px;
+  color: white;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 #nav-options button:hover,
 #nav-options a:hover {
-  text-decoration: underline; /* Add underline on hover for visual feedback */
+  text-decoration: underline;
+}
+
+#top-nav img, #top-nav h1 {
+  align-self: center;
+}
+
+#top-nav h1 {
+  margin-left: 20px;
+  flex-grow: 1;
 }
 
 #top-line {
   display: flex;
-  justify-content: center; /* Center the content horizontally */
-  align-items: center; /* Center items vertically */
+  justify-content: center;
+  align-items: center;
 }
 
 #logo {
-  width: 50px; /* Smaller width for the icon */
-  height: auto; /* Keeps the aspect ratio of the image */
-  margin: 10px; /* Adds a little space around the logo */
+  width: 50px;
+  height: auto;
+  margin: 10px;
 }
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Responsive grid */
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   grid-gap: 20px;
   padding: 20px;
 }
 
 .card {
-  background-color: #3A60E4; /* Card background color */
-  border: 1px solid #2D46B9; /* Card border color */
+  background-color: #3A60E4;
+  border: 1px solid #2D46B9;
   border-radius: 10px;
   padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 150px; /* Fixed height for cards */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for cards */
+  height: 150px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Hover effect shadow */
-  transform: translateY(-5px); /* Lifts card up slightly */
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.container > h3 {
+  text-align: center;
+  width: 100%;
+  margin: 20px 0;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 42px;
+  color: #ffffff;
 }

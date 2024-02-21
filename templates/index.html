@@ -12,22 +12,24 @@
         <!-- Top Navigation Bar -->
         <nav id="top-nav">
             <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-        <div id="nav-options">
-            <button onclick="window.location.href='/';">Home</button>
-            <button onclick="window.com.location.href='/about';">About</button>
-            <select id="sort-options" onchange="window.location.href=this.value;">
-                <option value="/">Select Sort Order</option>
-                <option value="/sort?by=name">Alphabetical</option>
-                <option value="/sort?by=current_price">Current Price</option>
-                <option value="/sort?by=volume">Volume</option>
-                <option value="/sort?by=close_price">Close Price</option>
-            </select>
-        </div>
+            <h1>StockViewer WebApp</h1>
+
+            <div id="nav-options">
+                <button onclick="window.location.href='/';">Home</button>
+                <button onclick="window.com.location.href='/about';">About</button>
+                <select id="sort-options" onchange="window.location.href=this.value;">
+                    <option value="/">Select Sort Order</option>
+                    <option value="/sort?by=name">Alphabetical</option>
+                    <option value="/sort?by=current_price">Current Price</option>
+                    <option value="/sort?by=volume">Volume</option>
+                    <option value="/sort?by=close_price">Close Price</option>
+                </select>
+            </div>
 
         </nav>
+        <h3>Stock Directory</h3>
 
         <div id="stock-panels">
-            <h3>All stocks</h3>
             <div class="card-container">
             {% for ticker in stock_tickers %}
                 <div class="card">
