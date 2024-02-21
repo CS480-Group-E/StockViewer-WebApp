@@ -43,7 +43,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px; /* Adjust padding as needed */
   background-color: #2D46B9; /* Match the container background or choose a different color */
   border-bottom: 1px solid #3A60E4; /* Optional: if you want a border under the nav */
   width: 100%; /* Ensure nav bar extends full width */
@@ -53,7 +52,7 @@ body {
 }
 
 #nav-options button,
-#nav-options a {
+#nav-options  {
   margin-right: 20px; /* Space between navigation items */
   color: white; /* Text color for better visibility */
   text-decoration: none; /* Remove underline from links */
