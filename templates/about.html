@@ -2,52 +2,52 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "stylesheet" href = "{{url_for('static', filename = '/about.css')}}">
-    <title>Stock Viewer About Us</title>
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{url_for('static', filename = '/about.css')}}">
+  <title>Stock Viewer About Us</title>
+
 </head>
 
 <body>
-    <div class="container">
-        <div id="top-nav">
-          <div id="top-line">
-            <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-            <h1>About Us</h1>
-          </div>
-          <div id="nav-options">
-            <button onclick="window.location.href='/';">Home</button>
-            <a href="#">Services</a>
-            <a href="#">Contact</a>
-          </div>
+  <div class="container">
+    <div id="top-nav">
+      <div id="top-line">
+        <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
+        <h1>About Us</h1>
+      </div>
+      <div id="nav-options">
+        <button onclick="window.location.href='/';">Home</button>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div id="top-section">
+      <h3>Meet Our Team</h3>
+      <div class="card-container">
+        <div class="card">
+          <h4>Person 1</h4>
+          <p>Description of Person 1</p>
         </div>
-        <div id="top-section">
-          <h3>Meet Our Team</h3>
-          <div class="card-container">
-            <div class="card">
-              <h4>Person 1</h4>
-              <p>Description of Person 1</p>
-            </div>
-            <div class="card">
-              <h4>Person 2</h4>
-              <p>Description of Person 2</p>
-            </div>
-            <div class="card">
-              <h4>Person 3</h4>
-              <p>Description of Person 3</p>
-            </div>
-            <div class="card">
-              <h4>Person 4</h4>
-              <p>Description of Person 4</p>
-            </div>
-            <div class="card">
-              <h4>Person 5</h4>
-              <p>Description of Person 5</p>
-            </div>
-          </div>
+        <div class="card">
+          <h4>Person 2</h4>
+          <p>Description of Person 2</p>
+        </div>
+        <div class="card">
+          <h4>Person 3</h4>
+          <p>Description of Person 3</p>
+        </div>
+        <div class="card">
+          <h4>Person 4</h4>
+          <p>Description of Person 4</p>
+        </div>
+        <div class="card">
+          <h4>Person 5</h4>
+          <p>Description of Person 5</p>
         </div>
       </div>
+    </div>
+  </div>
 </body>
 
 </html>
