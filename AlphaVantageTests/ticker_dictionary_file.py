@@ -1,6 +1,6 @@
 ticker_dictionary = {
     'AAPL'  : 1,    # Apple Inc.
-    'GOOGL' : 2,    # Alphabet Inc. (Google)
+    'IBM'   : 2,    # International Business Machines Corporation (IBM)
     'MSFT'  : 3,    # Microsoft Corporation
     'AMZN'  : 4,    # Amazon.com Inc.
     'FB'    : 5,    # Meta Platforms, Inc. (formerly Facebook, Inc.)
@@ -29,4 +29,5 @@ ticker_dictionary = {
     'MA'    : 28,   # Mastercard Incorporated
     'BA'    : 29,   # Boeing Company
     'MMM'   : 30,   # 3M Company
+    'GOOGL' : 31,    # Alphabet Inc. (Google)
 }

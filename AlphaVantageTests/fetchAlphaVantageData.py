@@ -1,6 +1,6 @@
 import requests
 import json
-
+from ticker_dictionary_file import ticker_dictionary
 
 # Function to make API call and save response to a file
 def fetch_and_save_data(url, filename):
@@ -17,7 +17,8 @@ def fetch_and_save_data(url, filename):
 api_key = 'demo'
 
 # List of stock tickers
-stock_tickers = ['IBM', 'AAPL', 'MSFT']
+stock_tickers = ['IBM', 'AAPL', 'MSFT']         # Hard Coded tickers for reduced querying         
+# stock_tickers = list(ticker_dictionary.keys())
 
 for ticker in stock_tickers:
     # Intraday data
