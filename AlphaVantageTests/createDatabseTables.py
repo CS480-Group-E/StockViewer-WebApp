@@ -72,6 +72,41 @@ cursor.execute('''
     )
 ''')
 
+# Create a table for CompanyFinancials
+cursor.execute('''
+               
+    CREATE TABLE IF NOT EXISTS CompanyFinancials (
+        stock_id INT,
+        pe_ratio DOUBLE,
+        peg_ratio DOUBLE,
+        book_value DOUBLE,
+        eps DOUBLE,
+        analyst_target_price DOUBLE,
+        forward_pe DOUBLE,
+        ev_to_revenue DOUBLE,
+        ev_to_ebitda DOUBLE,
+        beta DOUBLE,
+        fifty_day_moving_average DOUBLE,
+        shares_outstanding INT,
+        PRIMARY KEY (stock_id)
+    )
+''')
+
+# Create a table for Stock
+cursor.execute('''
+
+    CREATE TABLE IF NOT EXISTS Stock (
+        id INT,
+        date DATETIME,
+        symbol TEXT,
+        name VARCHAR(45),
+        exchange VARCHAR(45),
+        sector VARCHAR(45),
+        industry VARCHAR(45),
+        PRIMARY KEY (id, date)
+    )
+''')
+
 # Commit the changes and close the connection
 conn.commit()
 conn.close()
