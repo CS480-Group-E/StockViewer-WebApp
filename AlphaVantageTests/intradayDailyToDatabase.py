@@ -60,7 +60,7 @@ for ticker in all_tickers:
 
         # Insert into single table
         cursor.execute(f'''
-            INSERT OR IGNORE INTO {TABLE_NAME} (id, symbol, date, open, high, low, close, volume)
+            INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (ticker_dictionary[symbol], symbol, date, open_price, high_price, low_price, close_price, volume))
 
@@ -97,7 +97,7 @@ for ticker in all_tickers:
 
         # Insert into single table
         cursor.execute(f'''
-            INSERT OR IGNORE INTO {TABLE_NAME} (id, symbol, date, open, high, low, close, volume)
+            INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (ticker_dictionary[symbol], symbol, date, open_price, high_price, low_price, close_price, volume))
 
