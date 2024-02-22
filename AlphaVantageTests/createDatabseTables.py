@@ -1,5 +1,4 @@
 # Imports
-import json
 import sqlite3
 
 # Constant Variables
@@ -30,14 +29,14 @@ cursor.execute('''
 
     CREATE TABLE IF NOT EXISTS CompanyInfo (
         company_cik INT,
-        assest_type VARCHAR(45),
+        asset_type VARCHAR(45),
         currency VARCHAR(45),
         country VARCHAR(45),
         address VARCHAR(90),
         fiscal_year_end VARCHAR(45),
         latest_quarter VARCHAR(45),
-        markey_capitalization INT,
-        descriotion VARCHAR(6000),
+        market_capitalization INT,
+        description VARCHAR(6000),
         PRIMARY KEY (company_cik)
     )
 ''')

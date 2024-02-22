@@ -44,6 +44,7 @@ for ticker in all_tickers:
         print("Error: File " + filepath + " not found.")
         continue
 
+    
     # Extract relevant information
     symbol = json_data['Meta Data']['2. Symbol']
     last_refreshed = json_data['Meta Data']['3. Last Refreshed']
@@ -52,17 +53,20 @@ for ticker in all_tickers:
 
     # Insert data into the table
     for date, daily_data in time_series.items():
-        open_price = float(daily_data['1. open'])
-        high_price = float(daily_data['2. high'])
-        low_price = float(daily_data['3. low'])
-        close_price = float(daily_data['4. close'])
-        volume = int(daily_data['5. volume'])
-
-        # Insert into single table
-        cursor.execute(f'''
-            INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (ticker_dictionary[symbol], symbol, date, open_price, high_price, low_price, close_price, volume))
+        try:
+            open_price = float(daily_data['1. open'])
+            high_price = float(daily_data['2. high'])
+            low_price = float(daily_data['3. low'])
+            close_price = float(daily_data['4. close'])
+            volume = int(daily_data['5. volume'])
+            # Insert into single table
+            cursor.execute(f'''
+                INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (ticker_dictionary[symbol], symbol, date, open_price, high_price, low_price, close_price, volume))
+        except KeyError as e:
+            print(f"KeyError: {e} in {filepath} on {date}. Skipping Entry...")
+            continue
 
 # Commit Changes for Daily
 conn.commit()
@@ -89,18 +93,22 @@ for ticker in all_tickers:
 
     # Insert data into the table
     for date, daily_data in time_series.items():
-        open_price = float(daily_data['1. open'])
-        high_price = float(daily_data['2. high'])
-        low_price = float(daily_data['3. low'])
-        close_price = float(daily_data['4. close'])
-        volume = int(daily_data['5. volume'])
-
-        # Insert into single table
-        cursor.execute(f'''
-            INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (ticker_dictionary[symbol], symbol, date, open_price, high_price, low_price, close_price, volume))
-
+        try:
+            open_price = float(daily_data['1. open'])
+            high_price = float(daily_data['2. high'])
+            low_price = float(daily_data['3. low'])
+            close_price = float(daily_data['4. close'])
+            volume = int(daily_data['5. volume'])
+    
+            # Insert into single table
+            cursor.execute(f'''
+                INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (ticker_dictionary[symbol], symbol, date, open_price, high_price, low_price, close_price, volume))
+        except KeyError as e:
+            print(f"KeyError: {e} in {filepath} on {date}. Skipping Entry...")
+            continue
+        
 
 # Commit the changes and close the connection
 conn.commit()
