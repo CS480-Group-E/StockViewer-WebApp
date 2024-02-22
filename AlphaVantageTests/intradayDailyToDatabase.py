@@ -54,11 +54,11 @@ for ticker in all_tickers:
     # Insert data into the table
     for date, daily_data in time_series.items():
         try:
-            open_price = float(daily_data['1. open'])
-            high_price = float(daily_data['2. high'])
-            low_price = float(daily_data['3. low'])
+            open_price  = float(daily_data['1. open'])
+            high_price  = float(daily_data['2. high'])
+            low_price   = float(daily_data['3. low'])
             close_price = float(daily_data['4. close'])
-            volume = int(daily_data['5. volume'])
+            volume      = int(daily_data['5. volume'])
             # Insert into single table
             cursor.execute(f'''
                 INSERT OR IGNORE INTO {TABLE_NAME} (stock_id, symbol, date, open, high, low, close, volume)
@@ -94,11 +94,11 @@ for ticker in all_tickers:
     # Insert data into the table
     for date, daily_data in time_series.items():
         try:
-            open_price = float(daily_data['1. open'])
-            high_price = float(daily_data['2. high'])
-            low_price = float(daily_data['3. low'])
+            open_price  = float(daily_data['1. open'])
+            high_price  = float(daily_data['2. high'])
+            low_price   = float(daily_data['3. low'])
             close_price = float(daily_data['4. close'])
-            volume = int(daily_data['5. volume'])
+            volume      = int(daily_data['5. volume'])
     
             # Insert into single table
             cursor.execute(f'''
