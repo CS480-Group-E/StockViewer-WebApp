@@ -50,7 +50,7 @@ cursor.execute('''
         ebitda                          INT,
         dividend_per_share              DOUBLE,
         divident_yield                  DOUBLE,
-        revenue_per_share               DOUBLE,
+        revenue_per_share_ttm           DOUBLE,
         profit_margin                   DOUBLE,
         operating_margin_ttm            DOUBLE,
         return_on_assets_ttm            DOUBLE,
