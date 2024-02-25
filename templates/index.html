@@ -17,7 +17,7 @@
             <h1>StockViewer WebApp</h1>
             <div id="nav-options">
                 <button onclick="window.location.href='/';">Home</button>
-                <button onclick="window.com.location.href='/about';">About</button>
+                <button onclick="window.location.href='/about';">About</button>
                 <select id="sort-options" onchange="window.location.href=this.value;">
                     <option value="/">Select Sort Order</option>
                     <option value="/sort?by=name">Alphabetical</option>
@@ -33,7 +33,7 @@
         <div id="stock-panels">
             <div class="card-container">
                 {% for ticker in stock_tickers %}
-                <div class="card">
+                <div class="card" onclick="window.location.href='/view/' + ticker">
                     <p>{{ ticker }}</p>
                     <p>Current Price: {{ stock_prices[ticker] }}</p>
                 </div>
