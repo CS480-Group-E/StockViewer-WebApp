@@ -12,35 +12,91 @@ load_dotenv()
 API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
 app = Flask(__name__)
 
-# Load stock tickers from JSON file
 with open('tickers.json', 'r') as f:
     stock_tickers = json.load(f)
 
 def init_db():
     with sqlite3.connect(DATABASE) as conn:
-        conn.execute('''CREATE TABLE IF NOT EXISTS stock_prices (symbol TEXT PRIMARY KEY, price TEXT, last_updated DATETIME)''')
-        conn.execute('''CREATE TABLE IF NOT EXISTS time_series (symbol TEXT PRIMARY KEY, data TEXT, last_updated DATETIME)''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS stock_prices 
+                        (symbol TEXT PRIMARY KEY, 
+                         price TEXT, 
+                         volume INTEGER, 
+                         close_price REAL, 
+                         last_updated DATETIME)''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS time_series 
+                        (symbol TEXT PRIMARY KEY, 
+                         data TEXT, 
+                         last_updated DATETIME)''')
         conn.commit()
 
 def update_prices():
     with sqlite3.connect(DATABASE) as conn:
         c = conn.cursor()
         for ticker in stock_tickers.keys():
-            price_info = get_realtime_price(ticker)
-            price = price_info.get('05. price', "Unavailable")
-            c.execute('REPLACE INTO stock_prices (symbol, price, last_updated) VALUES (?, ?, ?)', (ticker, price, datetime.now()))
+            timeseries_data = fetch_timeseries_data(ticker)
+            latest_data_point = list(timeseries_data.values())[0]
+            price = latest_data_point.get('4. close', "Unavailable")
+            volume = latest_data_point.get('5. volume', 0)
+            close_price = price
+            
+            c.execute('''REPLACE INTO stock_prices (symbol, price, volume, close_price, last_updated) 
+                         VALUES (?, ?, ?, ?, ?)''', 
+                      (ticker, price, volume, close_price, datetime.now()))
             conn.commit()
-        threading.Timer(300, update_prices).start()  # Re-run after 5 minutes
-
+            
 def get_realtime_price(symbol):
     url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={API_KEY}'
     response = requests.get(url)
     return response.json().get('Global Quote', {})
 
+def fetch_stock_prices():
+    stock_prices = {}
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        c.execute('SELECT symbol, price FROM stock_prices')
+        rows = c.fetchall()
+        for symbol, price in rows:
+            formatted_price = "${:,.2f}".format(float(price)) if price not in ["Unavailable", None] else "Unavailable"
+            stock_prices[symbol] = formatted_price
+    return stock_prices
+
 def fetch_timeseries_data(ticker):
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={API_KEY}'
     response = requests.get(url)
     return response.json().get("Time Series (Daily)", {})
+
+def update_timeseries_data(ticker, api_key):
+    timeseries_data = fetch_timeseries_data(ticker)
+    
+    # Assuming the latest data is at the beginning
+    latest_data = next(iter(timeseries_data.values()))
+    volume = latest_data.get("5. volume")
+    close_price = latest_data.get("4. close")
+
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        # Store the entire timeseries data as JSON and also the latest volume and close price separately
+        c.execute('''REPLACE INTO time_series (symbol, data, last_updated) 
+                     VALUES (?, ?, ?)''', 
+                  (ticker, json.dumps(timeseries_data), datetime.now()))
+        conn.commit()
+
+def transform_timeseries_data(timeseries_data):
+    chart_data = []
+    for timestamp, values in timeseries_data.items():
+        try:
+            chart_data.append({
+                "time": timestamp,
+                "open": float(values["1. open"]),
+                "high": float(values["2. high"]),
+                "low": float(values["3. low"]),
+                "close": float(values["4. close"])
+            })
+        except (KeyError, ValueError) as e:
+            print(f"Error processing data for timestamp {timestamp}: {e}")
+    return chart_data
+
+# ===== Back-end routing =====
 
 @app.route('/api/timeseries/<ticker>')
 def timeseries(ticker):
@@ -80,24 +136,15 @@ def timeseries(ticker):
         else:
             return jsonify({"error": "No data available for ticker: {}".format(ticker)})
 
-def transform_timeseries_data(timeseries_data):
-    chart_data = []
-    for timestamp, values in timeseries_data.items():
-        try:
-            chart_data.append({
-                "time": timestamp,
-                "open": float(values["1. open"]),
-                "high": float(values["2. high"]),
-                "low": float(values["3. low"]),
-                "close": float(values["4. close"])
-            })
-        except (KeyError, ValueError) as e:
-            print(f"Error processing data for timestamp {timestamp}: {e}")
-    return chart_data
+# ===== Front-end routing =====
 
 @app.route('/')
 def home():
     stock_prices = {}
+    # Define stock_tickers here or ensure it's always defined before this point
+    with open('tickers.json', 'r') as f:
+        stock_tickers = json.load(f)
+    
     with sqlite3.connect(DATABASE) as conn:
         c = conn.cursor()
         c.execute('SELECT symbol, price FROM stock_prices')
@@ -113,26 +160,22 @@ def about():
 
 @app.route('/view/<ticker>')
 def single_view(ticker):
+    stock_prices = fetch_stock_prices()
     company_name = stock_tickers.get(ticker, "Unknown Company")
-    price = "Unavailable"
     with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row  # Enables column access by name
         c = conn.cursor()
-        c.execute('SELECT price FROM stock_prices WHERE symbol = ?', (ticker,))
+        c.execute('''SELECT price, volume, close_price FROM stock_prices WHERE symbol = ?''', (ticker,))
         row = c.fetchone()
-        price = "${:,.2f}".format(float(row[0])) if row and row[0] not in ["Unavailable", None] else "Unavailable"
-    # Pass stock_tickers to the template
-    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, stock_tickers=stock_tickers)
 
-def update_timeseries_data(ticker, api_key):
-    # Fetch time series data from the API
-    timeseries_data = fetch_timeseries_data(ticker)
+    if row:
+        price = "${:,.2f}".format(float(row['price'])) if row['price'] else "Unavailable"
+        volume = row['volume'] if row['volume'] else "Unavailable"
+        close_price = "${:,.2f}".format(float(row['close_price'])) if row['close_price'] else "Unavailable"
+    else:
+        price, volume, close_price = "Unavailable", "Unavailable", "Unavailable"
 
-    # Store the data in the database
-    with sqlite3.connect(DATABASE) as conn:
-        c = conn.cursor()
-        c.execute('REPLACE INTO time_series (symbol, data, last_updated) VALUES (?, ?, ?)',
-                  (ticker, json.dumps(timeseries_data), datetime.now()))
-        conn.commit()
+    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, volume=volume, close_price=close_price, stock_tickers=stock_tickers)
 
 if __name__ == '__main__':
     init_db()

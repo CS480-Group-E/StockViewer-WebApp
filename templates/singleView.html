@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
     <!-- LightweightCharts Development (swap 'development' to 'production' for stripped version) -->
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.development.js"></script>
-    <title>{{ company_name }} - StockViewer WebApp</title>
+    <title>{{ company_name }} ({{ ticker }}) - StockViewer WebApp</title>
 </head>
 <body>
     <div style="position: absolute; top: 0; right: 0; z-index: 1030;">
@@ -25,6 +25,8 @@
     <div class="container-fluid pt-4">
         <h2>{{ company_name }} ({{ ticker }})</h2>
         <p>Current Price: {{ price }}</p>
+        <p>Volume: {{ volume }}</p>
+        <p>Close Price: {{ close_price }}</p>
         <a href="/">Back to Home</a>
         <div id="graph-container" style="height: 300px; width: 100%;"></div>
     </div>
@@ -38,6 +40,7 @@
             {% endfor %}
         </div>
     </div>
+
 
 <script>
     const ticker = "{{ ticker }}";
