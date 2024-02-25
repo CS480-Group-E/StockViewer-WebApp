@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import threading
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -140,6 +140,37 @@ def timeseries(ticker):
         else:
             return jsonify({"error": "No data available for ticker: {}".format(ticker)})
 
+@app.route('/sort')
+def sort_stocks():
+    sort_by = request.args.get('by', 'name')
+    sort_method = ""  # To hold the sort method description
+    if sort_by == 'name':
+        sort_method = "Alphabetical"
+    elif sort_by == 'current_price':
+        sort_method = "Current Price"
+    elif sort_by == 'volume':
+        sort_method = "Volume"
+    elif sort_by == 'close_price':
+        sort_method = "Close Price"
+    
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        
+        if sort_by == 'name':
+            c.execute('SELECT * FROM stock_prices ORDER BY symbol ASC')
+        elif sort_by == 'current_price':
+            c.execute('SELECT * FROM stock_prices ORDER BY CAST(price AS REAL) DESC')
+        elif sort_by == 'volume':
+            c.execute('SELECT * FROM stock_prices ORDER BY volume DESC')
+        elif sort_by == 'close_price':
+            c.execute('SELECT * FROM stock_prices ORDER BY close_price DESC')
+        
+        rows = c.fetchall()
+        stock_prices = {row['symbol']: "${:,.2f}".format(float(row['price'])) if row['price'] not in ["Unavailable", None] else "Unavailable" for row in rows}
+
+    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, sort_method=sort_method)
+
 # ===== Front-end routing =====
 
 @app.route('/')
@@ -156,7 +187,7 @@ def home():
         for symbol, price in rows:
             formatted_price = "${:,.2f}".format(float(price)) if price not in ["Unavailable", None] else "Unavailable"
             stock_prices[symbol] = formatted_price
-    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices)
+    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, sort_method="Alphabetical")
 
 @app.route('/about')
 def about():

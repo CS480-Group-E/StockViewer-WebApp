@@ -24,7 +24,7 @@
                 <button onclick="window.location.href='/';">Home</button>
                 <button onclick="window.location.href='/about';">About</button>
                 <select id="sort-options" onchange="window.location.href=this.value;">
-                    <option value="/">Select Sort Order</option>
+                    <option value="/">Sorted by: {{ sort_method }}</option>
                     <option value="/sort?by=name">Alphabetical</option>
                     <option value="/sort?by=current_price">Current Price</option>
                     <option value="/sort?by=volume">Volume</option>
@@ -35,11 +35,11 @@
         </nav>
         <div id="stock-panels">
             <div class="card-container">
-                {% for ticker, name in stock_tickers.items() %}
+                {% for ticker, price in stock_prices.items() %}
                 <div class="card" onclick="window.location.href='{{ url_for('single_view', ticker=ticker) }}'">
-                    <h4 class="card-title">{{ name }}</h4>
+                    <h4 class="card-title">{{ stock_tickers[ticker] }}</h4>
                     <p>{{ ticker }}</p>
-                    <p>Current Price: {{ stock_prices[ticker] }}</p>
+                    <p>Current Price: {{ price }}</p>
                 </div>
                 {% endfor %}
             </div>
