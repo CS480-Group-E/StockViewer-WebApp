@@ -2,14 +2,14 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff; /* Match background color */
-    color: #333; /* Adjust text color */
+    background-color: #fff; 
+    color: #333; 
 }
 
 .container-fluid {
     margin: auto;
     padding: 2% 10% 10%;
-    background-color: #f0f3f5; /* Match background color */
+    background-color: #f0f3f5; 
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
     border-radius: 8px;
     overflow: visible;
@@ -122,32 +122,32 @@ body {
 }
 
 #stockSidebar {
-    position: fixed; /* Fixed position */
-    top: 50px; /* Adjust this value to position the sidebar below the toggle button */
-    right: 0; /* Align to the right */
-    width: 250px; /* Width of the sidebar */
-    height: calc(100% - 50px); /* Adjust height to account for the toggle button */
-    overflow-y: auto; /* Enable vertical scrolling */
-    background-color: #f8f9fa; /* Background color */
-    border-left: 1px solid #ddd; /* Left border for definition */
-    z-index: 1040; /* Ensure it's below the toggle button */
+    position: fixed; 
+    top: 50px; 
+    right: 0; 
+    width: 250px; 
+    height: calc(100% - 50px); 
+    overflow-y: auto; 
+    background-color: #f8f9fa; 
+    border-left: 1px solid #ddd; 
+    z-index: 1040; 
 }
 
 .btn-toggle-sidebar {
-    position: fixed; /* Fixed position so it stays in place when scrolling */
-    top: 10px; /* Position from the top */
-    right: 10px; /* Position from the right */
-    z-index: 1050; /* Above the sidebar */
+    position: fixed; 
+    top: 10px; 
+    right: 10px; 
+    z-index: 1050; 
     margin: 0.5rem;
 }
 
-/* Update the .container-fluid top padding if necessary */
+
 .container-fluid {
-    padding-top: 60px; /* This should be greater than the height of the toggle button */
+    padding-top: 60px; 
 }
 
-/* Ensure the main content is not too large for the viewport */
+
 #stock-body {
-    max-height: calc(100vh - 4rem); /* Viewport height minus header height */
-    overflow-y: auto; /* Scroll if content overflows */
+    max-height: calc(100vh - 4rem); 
+    overflow-y: auto; 
 }
