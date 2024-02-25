@@ -38,9 +38,9 @@ def get_realtime_price(symbol):
     return response.json().get('Global Quote', {})
 
 def fetch_timeseries_data(ticker):
-    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=30min&apikey={API_KEY}'
+    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={API_KEY}'
     response = requests.get(url)
-    return response.json().get("Time Series (30min)", {})
+    return response.json().get("Time Series (Daily)", {})
 
 @app.route('/api/timeseries/<ticker>')
 def timeseries(ticker):
