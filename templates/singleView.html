@@ -11,8 +11,8 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='singleView.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
-    <title>StockViewer WebApp</title>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <title>{{ company_name }} - StockViewer WebApp</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.development.js"></script>
 </head>
 <body>
     <div class="container-fluid">
@@ -25,45 +25,66 @@
     </div>
 
 <script>
-    const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
-        width: 600,
-        height: 300,
-        layout: {
-            backgroundColor: '#ffffff',
-            textColor: 'rgba(33, 56, 77, 1)',
+const ticker = "{{ ticker }}"; // Get the ticker value from the template
+const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
+    width: 600,
+    height: 300,
+    layout: {
+        backgroundColor: '#ffffff',
+        textColor: 'rgba(33, 56, 77, 1)',
+    },
+    grid: {
+        vertLines: {
+            color: 'rgba(197, 203, 206, 0.7)',
         },
-        grid: {
-            vertLines: {
-                color: 'rgba(197, 203, 206, 0.7)',
-            },
-            horzLines: {
-                color: 'rgba(197, 203, 206, 0.7)',
-            },
+        horzLines: {
+            color: 'rgba(197, 203, 206, 0.7)',
         },
-        crosshair: {
-            mode: LightweightCharts.CrosshairMode.Normal,
-        },
-        rightPriceScale: {
-            borderColor: 'rgba(197, 203, 206, 0.8)',
-        },
-        timeScale: {
-            borderColor: 'rgba(197, 203, 206, 0.8)',
-        },
-    });
+    },
+    crosshair: {
+        mode: LightweightCharts.CrosshairMode.Normal,
+    },
+    rightPriceScale: {
+        borderColor: 'rgba(197, 203, 206, 0.8)',
+    },
+    timeScale: {
+        borderColor: 'rgba(197, 203, 206, 0.8)',
+    },
+});
 
-    const candleSeries = chart.addCandlestickSeries();
+const candleSeries = chart.addCandlestickSeries();
 
-    // Static data for the chart
-    const staticChartData = [
-        { time: '2021-03-01', open: 120.13, high: 121.00, low: 117.62, close: 119.90 },
-        { time: '2021-03-02', open: 120.00, high: 121.50, low: 118.99, close: 120.69 },
-        { time: '2021-03-03', open: 121.14, high: 122.71, low: 119.15, close: 119.76 },
-        { time: '2021-03-04', open: 118.58, high: 121.00, low: 116.21, close: 120.39 },
-        // ... more data points
-    ];
+fetch(`/api/timeseries/${encodeURIComponent(ticker)}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log('Received data:', data); // Log data to the console
+        if(data && Array.isArray(data)) {
+            const formattedData = data.map(item => ({
+                time: new Date(item.time).getTime() / 1000, // Ensure time is in seconds
+                open: parseFloat(item.open),
+                high: parseFloat(item.high),
+                low: parseFloat(item.low),
+                close: parseFloat(item.close)
+            }));
+            
+            // Sort the formattedData array based on the time property in ascending order
+            formattedData.sort((a, b) => a.time - b.time);
+            
+            console.log('Formatted data:', formattedData); // Log formatted data
+            candleSeries.setData(formattedData);
+        } else {
+            console.error('Time series data is not in expected format:', data);
+        }
+    })
+    .catch(error => console.error('Error fetching time series data:', error));
 
-    // Set the static data to the candlestick series
-    candleSeries.setData(staticChartData);
+// Function to convert date string to the correct format (yyyy-mm-dd)
+function convertDateFormat(dateString) {
+    const parts = dateString.split(' '); // Split date and time parts
+    const dateParts = parts[0].split('-'); // Split date into year, month, day
+    return `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; // Return date in yyyy-mm-dd format
+}
+
 </script>
 
 </body>

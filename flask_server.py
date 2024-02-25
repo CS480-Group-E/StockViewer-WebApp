@@ -1,101 +1,99 @@
 import sqlite3
-from flask import Flask, render_template, url_for
+import json
+from flask import Flask, render_template, jsonify
 import threading
-import time
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 import requests
 
 DATABASE = 'stock_prices.db'
-
-def init_db():
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS stock_prices (symbol TEXT PRIMARY KEY, price TEXT)''')
-    conn.commit()
-    conn.close()
-
-def update_prices():
-    while True:
-        with sqlite3.connect(DATABASE, timeout=20) as conn:
-            c = conn.cursor()
-            for ticker in stock_tickers.keys():
-                price_info = get_realtime_price(ticker)
-                if '05. price' in price_info:
-                    c.execute('REPLACE INTO stock_prices (symbol, price) VALUES (?, ?)', (ticker, price_info['05. price']))
-                else:
-                    c.execute('REPLACE INTO stock_prices (symbol, price) VALUES (?, ?)', (ticker, "Unavailable"))
-                conn.commit()
-        time.sleep(60*5)
-
-def get_realtime_price(symbol):
-    API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
-    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={API_KEY}'
-    response = requests.get(url)
-    price_data = response.json()
-    return price_data.get('Global Quote', {})
-
 load_dotenv()
-
+API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
 app = Flask(__name__)
 
-stock_tickers = {
-    'AAPL': 'Apple Inc.',
-    'GOOGL': 'Alphabet Inc.',
-    'MSFT': 'Microsoft Corporation',
-    'AMZN': 'Amazon.com Inc.',
-    'META': 'Meta Platforms, Inc.',
-    'TSLA': 'Tesla Inc.',
-    'BRK.A': 'Berkshire Hathaway Inc.',
-    'V': 'Visa Inc.',
-    'JNJ': 'Johnson & Johnson',
-    'WMT': 'Walmart Inc.',
-    'NVDA': 'NVIDIA Corporation',
-    'NFLX': 'Netflix Inc.',
-    'PG': 'Procter & Gamble Co.',
-    'DIS': 'The Walt Disney Company',
-    'PFE': 'Pfizer Inc.',
-    'BAC': 'Bank of America Corp',
-    'XOM': 'Exxon Mobil Corporation',
-    'KO': 'Coca-Cola Company',
-    'NKE': 'NIKE Inc.',
-    'INTC': 'Intel Corporation',
-    'CSCO': 'Cisco Systems, Inc.',
-    'VZ': 'Verizon Communications Inc.',
-    'ADBE': 'Adobe Inc.',
-    'CRM': 'Salesforce.com, inc.',
-    'T': 'AT&T Inc.',
-    'UNH': 'UnitedHealth Group Incorporated',
-    'HD': 'Home Depot Inc.',
-    'MA': 'Mastercard Incorporated',
-    'BA': 'Boeing Company',
-    'MMM': '3M Company'
-}
+# Load stock tickers from JSON file
+with open('tickers.json', 'r') as f:
+    stock_tickers = json.load(f)
+
+def init_db():
+    with sqlite3.connect(DATABASE) as conn:
+        conn.execute('''CREATE TABLE IF NOT EXISTS stock_prices (symbol TEXT PRIMARY KEY, price TEXT, last_updated DATETIME)''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS time_series (symbol TEXT PRIMARY KEY, data TEXT, last_updated DATETIME)''')
+        conn.commit()
+
+def update_prices():
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        for ticker in stock_tickers.keys():
+            price_info = get_realtime_price(ticker)
+            price = price_info.get('05. price', "Unavailable")
+            c.execute('REPLACE INTO stock_prices (symbol, price, last_updated) VALUES (?, ?, ?)', (ticker, price, datetime.now()))
+            conn.commit()
+        threading.Timer(300, update_prices).start()  # Re-run after 5 minutes
+
+def get_realtime_price(symbol):
+    url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={API_KEY}'
+    response = requests.get(url)
+    return response.json().get('Global Quote', {})
+
+def fetch_timeseries_data(ticker):
+    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=30min&apikey={API_KEY}'
+    response = requests.get(url)
+    return response.json().get("Time Series (30min)", {})
 
 @app.route('/api/timeseries/<ticker>')
 def timeseries(ticker):
-    API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
-    # Example using the Alpha Vantage API for daily time series data
-    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&outputsize=compact&apikey={API_KEY}'
-    response = requests.get(url)
-    time_series_data = response.json()
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        # Attempt to fetch the last updated time for the requested ticker
+        c.execute('SELECT last_updated FROM time_series WHERE symbol = ?', (ticker,))
+        row = c.fetchone()
 
-    # Extract the time series data from the response
-    time_series = time_series_data.get("Time Series (Daily)", {})
+        # Check if we need to update the timeseries data based on the last update time
+        if row:
+            last_updated_str = row[0]
+            try:
+                last_updated = datetime.strptime(last_updated_str, '%Y-%m-%d %H:%M:%S.%f')
+            except ValueError:
+                last_updated = datetime.strptime(last_updated_str, '%Y-%m-%d %H:%M:%S')
 
-    # Transform the data into the format expected by Lightweight Charts
-    chart_data = [
-        {
-            "time": date,
-            "open": float(data["1. open"]),
-            "high": float(data["2. high"]),
-            "low": float(data["3. low"]),
-            "close": float(data["4. close"])
-        } for date, data in time_series.items()
-    ]
+            if datetime.now() - last_updated > timedelta(minutes=30):
+                # Time to update the timeseries data
+                update_timeseries_data(ticker, API_KEY)
 
-    # Return the transformed data as JSON
-    return {"data": chart_data}
+        else:
+            # No data for this ticker yet, fetch and store it
+            update_timeseries_data(ticker, API_KEY)
+
+    # Fetch the latest timeseries data from the database to return
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        c.execute('SELECT data FROM time_series WHERE symbol = ?', (ticker,))
+        row = c.fetchone()
+        if row:
+            # Convert the stored JSON string back into a Python dict
+            timeseries_data = json.loads(row[0])
+            # Transform data into the format expected by the chart
+            chart_data = transform_timeseries_data(timeseries_data)
+            return jsonify(chart_data)
+        else:
+            return jsonify({"error": "No data available for ticker: {}".format(ticker)})
+
+def transform_timeseries_data(timeseries_data):
+    chart_data = []
+    for timestamp, values in timeseries_data.items():
+        try:
+            chart_data.append({
+                "time": timestamp,
+                "open": float(values["1. open"]),
+                "high": float(values["2. high"]),
+                "low": float(values["3. low"]),
+                "close": float(values["4. close"])
+            })
+        except (KeyError, ValueError) as e:
+            print(f"Error processing data for timestamp {timestamp}: {e}")
+    return chart_data
 
 @app.route('/')
 def home():
@@ -121,11 +119,21 @@ def single_view(ticker):
         c = conn.cursor()
         c.execute('SELECT price FROM stock_prices WHERE symbol = ?', (ticker,))
         row = c.fetchone()
-        if row:
-            price = "${:,.2f}".format(float(row[0])) if row[0] not in ["Unavailable", None] else "Unavailable"
+        price = "${:,.2f}".format(float(row[0])) if row and row[0] not in ["Unavailable", None] else "Unavailable"
     return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price)
+
+def update_timeseries_data(ticker, api_key):
+    # Fetch time series data from the API
+    timeseries_data = fetch_timeseries_data(ticker)
+
+    # Store the data in the database
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        c.execute('REPLACE INTO time_series (symbol, data, last_updated) VALUES (?, ?, ?)',
+                  (ticker, json.dumps(timeseries_data), datetime.now()))
+        conn.commit()
 
 if __name__ == '__main__':
     init_db()
-    threading.Thread(target=update_prices, daemon=True).start()
+    update_prices()
     app.run(debug=True)
