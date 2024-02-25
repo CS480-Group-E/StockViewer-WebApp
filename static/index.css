@@ -72,6 +72,14 @@ body {
     align-items: flex-start;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    padding: 20px;
+    height: auto;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-bottom: 0.5rem;
 }
 
 .card:hover {

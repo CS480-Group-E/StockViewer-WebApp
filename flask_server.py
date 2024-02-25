@@ -97,9 +97,41 @@ stock_tickers = [
     'MMM',    # 3M Company
 ]
 
-# stock directory landing page
 @app.route('/')
 def home():
+    company_names = {
+        'AAPL': 'Apple Inc.',
+        'GOOGL': 'Alphabet Inc.',
+        'MSFT': 'Microsoft Corporation',
+        'AMZN': 'Amazon.com Inc.',
+        'META': 'Meta Platforms, Inc.',
+        'TSLA': 'Tesla Inc.',
+        'BRK.A': 'Berkshire Hathaway Inc.',
+        'V': 'Visa Inc.',
+        'JNJ': 'Johnson & Johnson',
+        'WMT': 'Walmart Inc.',
+        'NVDA': 'NVIDIA Corporation',
+        'NFLX': 'Netflix Inc.',
+        'PG': 'Procter & Gamble Co.',
+        'DIS': 'The Walt Disney Company',
+        'PFE': 'Pfizer Inc.',
+        'BAC': 'Bank of America Corp',
+        'XOM': 'Exxon Mobil Corporation',
+        'KO': 'Coca-Cola Company',
+        'NKE': 'NIKE Inc.',
+        'INTC': 'Intel Corporation',
+        'CSCO': 'Cisco Systems, Inc.',
+        'VZ': 'Verizon Communications Inc.',
+        'ADBE': 'Adobe Inc.',
+        'CRM': 'Salesforce.com, inc.',
+        'T': 'AT&T Inc.',
+        'UNH': 'UnitedHealth Group Incorporated',
+        'HD': 'Home Depot Inc.',
+        'MA': 'Mastercard Incorporated',
+        'BA': 'Boeing Company',
+        'MMM': '3M Company'
+    }
+    
     stock_prices = {}
     with sqlite3.connect(DATABASE) as conn:
         c = conn.cursor()
@@ -108,11 +140,12 @@ def home():
         for row in rows:
             symbol, price = row
             if price != "Unavailable":
+                # Format the price as a float with 2 decimal places and commas
                 formatted_price = "${:,.2f}".format(float(price))
             else:
                 formatted_price = price
             stock_prices[symbol] = formatted_price
-    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices)
+    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, company_names=company_names)
 
 # About page
 @app.route('/about')
