@@ -11,8 +11,9 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='singleView.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
-    <title>{{ company_name }} - StockViewer WebApp</title>
+    <!-- LightweightCharts Development (swap 'development' to 'production' for stripped version) -->
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.development.js"></script>
+    <title>{{ company_name }} - StockViewer WebApp</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -20,6 +21,7 @@
             <h2>{{ company_name }}</h2>
             <p>Ticker: {{ ticker }}</p>
             <p>Current Price: {{ price }}</p>
+            <a href="/">Back to Home</a> <!-- Link back to home page -->
             <div id="graph-container" style="height: 300px; width: 600px;"></div>
         </div>
     </div>
