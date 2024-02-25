@@ -120,7 +120,8 @@ def single_view(ticker):
         c.execute('SELECT price FROM stock_prices WHERE symbol = ?', (ticker,))
         row = c.fetchone()
         price = "${:,.2f}".format(float(row[0])) if row and row[0] not in ["Unavailable", None] else "Unavailable"
-    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price)
+    # Pass stock_tickers to the template
+    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, stock_tickers=stock_tickers)
 
 def update_timeseries_data(ticker, api_key):
     # Fetch time series data from the API

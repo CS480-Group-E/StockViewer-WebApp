@@ -120,3 +120,34 @@ body {
     width: 100%;
     margin: 20px 0;
 }
+
+#stockSidebar {
+    position: fixed; /* Fixed position */
+    top: 50px; /* Adjust this value to position the sidebar below the toggle button */
+    right: 0; /* Align to the right */
+    width: 250px; /* Width of the sidebar */
+    height: calc(100% - 50px); /* Adjust height to account for the toggle button */
+    overflow-y: auto; /* Enable vertical scrolling */
+    background-color: #f8f9fa; /* Background color */
+    border-left: 1px solid #ddd; /* Left border for definition */
+    z-index: 1040; /* Ensure it's below the toggle button */
+}
+
+.btn-toggle-sidebar {
+    position: fixed; /* Fixed position so it stays in place when scrolling */
+    top: 10px; /* Position from the top */
+    right: 10px; /* Position from the right */
+    z-index: 1050; /* Above the sidebar */
+    margin: 0.5rem;
+}
+
+/* Update the .container-fluid top padding if necessary */
+.container-fluid {
+    padding-top: 60px; /* This should be greater than the height of the toggle button */
+}
+
+/* Ensure the main content is not too large for the viewport */
+#stock-body {
+    max-height: calc(100vh - 4rem); /* Viewport height minus header height */
+    overflow-y: auto; /* Scroll if content overflows */
+}

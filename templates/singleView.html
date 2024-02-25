@@ -16,13 +16,31 @@
     <title>{{ company_name }} - StockViewer WebApp</title>
 </head>
 <body>
-    <div class="container-fluid">
+    <!-- Top right button for toggling the stock list -->
+    <div style="position: absolute; top: 0; right: 0; z-index: 1030;">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#stockSidebar" aria-expanded="false" aria-controls="stockSidebar">
+            Toggle Stock List
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid pt-4">
         <div id="stock-body">
-            <h2>{{ company_name }}</h2>
-            <p>Ticker: {{ ticker }}</p>
+            <h2>{{ ticker }}</h2>
             <p>Current Price: {{ price }}</p>
             <a href="/">Back to Home</a> <!-- Link back to home page -->
-            <div id="graph-container" style="height: 300px; width: 600px;"></div>
+            <div id="graph-container" style="height: 300px; width: 100%;"></div>
+        </div>
+    </div>
+
+    <!-- Collapsible Sidebar for stock list -->
+    <div class="collapse" id="stockSidebar">
+        <div class="list-group">
+            {% for ticker, name in stock_tickers.items() %}
+            <a href="/view/{{ ticker }}" class="list-group-item list-group-item-action">
+                {{ name }} ({{ ticker }})
+            </a>
+            {% endfor %}
         </div>
     </div>
 
