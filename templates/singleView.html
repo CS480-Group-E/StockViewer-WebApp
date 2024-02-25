@@ -16,24 +16,19 @@
     <title>{{ company_name }} - StockViewer WebApp</title>
 </head>
 <body>
-    <!-- Top right button for toggling the stock list -->
     <div style="position: absolute; top: 0; right: 0; z-index: 1030;">
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#stockSidebar" aria-expanded="false" aria-controls="stockSidebar">
             Toggle Stock List
         </button>
     </div>
 
-    <!-- Main Content -->
     <div class="container-fluid pt-4">
-        <div id="stock-body">
-            <h2>{{ company_name }} ({{ ticker }})</h2>
-            <p>Current Price: {{ price }}</p>
-            <a href="/">Back to Home</a> <!-- Link back to home page -->
-            <div id="graph-container" style="height: 300px; width: 100%;"></div>
-        </div>
+        <h2>{{ company_name }} ({{ ticker }})</h2>
+        <p>Current Price: {{ price }}</p>
+        <a href="/">Back to Home</a>
+        <div id="graph-container" style="height: 300px; width: 100%;"></div>
     </div>
 
-    <!-- Collapsible Sidebar for stock list -->
     <div class="collapse" id="stockSidebar">
         <div class="list-group">
             {% for ticker, name in stock_tickers.items() %}
@@ -45,66 +40,63 @@
     </div>
 
 <script>
-const ticker = "{{ ticker }}"; // Get the ticker value from the template
-const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
-    width: 600,
-    height: 300,
-    layout: {
-        backgroundColor: '#ffffff',
-        textColor: 'rgba(33, 56, 77, 1)',
-    },
-    grid: {
-        vertLines: {
-            color: 'rgba(197, 203, 206, 0.7)',
+    const ticker = "{{ ticker }}";
+    const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
+        width: 900,
+        height: 500,
+        layout: {
+            backgroundColor: '#ffffff',
+            textColor: 'rgba(33, 56, 77, 1)',
         },
-        horzLines: {
-            color: 'rgba(197, 203, 206, 0.7)',
+        grid: {
+            vertLines: {
+                color: 'rgba(197, 203, 206, 0.7)',
+            },
+            horzLines: {
+                color: 'rgba(197, 203, 206, 0.7)',
+            },
         },
-    },
-    crosshair: {
-        mode: LightweightCharts.CrosshairMode.Normal,
-    },
-    rightPriceScale: {
-        borderColor: 'rgba(197, 203, 206, 0.8)',
-    },
-    timeScale: {
-        borderColor: 'rgba(197, 203, 206, 0.8)',
-    },
-});
+        crosshair: {
+            mode: LightweightCharts.CrosshairMode.Normal,
+        },
+        rightPriceScale: {
+            borderColor: 'rgba(197, 203, 206, 0.8)',
+        },
+        timeScale: {
+            borderColor: 'rgba(197, 203, 206, 0.8)',
+        },
+    });
 
-const candleSeries = chart.addCandlestickSeries();
+    const candleSeries = chart.addCandlestickSeries();
 
-fetch(`/api/timeseries/${encodeURIComponent(ticker)}`)
-    .then(response => response.json())
-    .then(data => {
-        console.log('Received data:', data); // Log data to the console
-        if(data && Array.isArray(data)) {
-            const formattedData = data.map(item => ({
-                time: new Date(item.time).getTime() / 1000, // Ensure time is in seconds
-                open: parseFloat(item.open),
-                high: parseFloat(item.high),
-                low: parseFloat(item.low),
-                close: parseFloat(item.close)
-            }));
-            
-            // Sort the formattedData array based on the time property in ascending order
-            formattedData.sort((a, b) => a.time - b.time);
-            
-            console.log('Formatted data:', formattedData); // Log formatted data
-            candleSeries.setData(formattedData);
-        } else {
-            console.error('Time series data is not in expected format:', data);
-        }
-    })
-    .catch(error => console.error('Error fetching time series data:', error));
+    fetch(`/api/timeseries/${encodeURIComponent(ticker)}`)
+        .then(response => response.json())
+        .then(data => {
+            if(data && Array.isArray(data)) {
+                const formattedData = data.map(item => ({
+                    time: new Date(item.time).getTime() / 1000, // Ensure time is in seconds
+                    open: parseFloat(item.open),
+                    high: parseFloat(item.high),
+                    low: parseFloat(item.low),
+                    close: parseFloat(item.close)
+                }));
+                
+                // Sort the formattedData array based on the time property in ascending order
+                formattedData.sort((a, b) => a.time - b.time);
+                
+                candleSeries.setData(formattedData);
+            } else {
+                console.error('Time series data is not in expected format:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching time series data:', error));
 
-// Function to convert date string to the correct format (yyyy-mm-dd)
-function convertDateFormat(dateString) {
-    const parts = dateString.split(' '); // Split date and time parts
-    const dateParts = parts[0].split('-'); // Split date into year, month, day
-    return `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; // Return date in yyyy-mm-dd format
-}
-
+    // Function to convert date string to the correct format (yyyy-mm-dd)
+    function convertDateFormat(dateString) {
+        const parts = dateString.split(' '); // Split date and time parts
+        const dateParts = parts[0].split('-'); // Split date into year, month, day
+        return `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`; // Return date in yyyy-mm-dd format
+    }
 </script>
 
 </body>
