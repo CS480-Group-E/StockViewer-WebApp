@@ -35,11 +35,11 @@
         </nav>
         <div id="stock-panels">
             <div class="card-container">
-                {% for ticker in stock_tickers %}
-                <div class="card" onclick="window.location.href='/view/' + ticker">
-                    <h4 class="card-title">{{ company_names[ticker] }}</h4>
+                {% for ticker, name in stock_tickers.items() %}
+                <div class="card" onclick="window.location.href='{{ url_for('single_view', ticker=ticker) }}'">
+                    <h4 class="card-title">{{ name }}</h4>
                     <p>{{ ticker }}</p>
-                    <p>Current Price: ${{ stock_prices[ticker] }}</p>
+                    <p>Current Price: {{ stock_prices[ticker] }}</p>
                 </div>
                 {% endfor %}
             </div>

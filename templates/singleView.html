@@ -17,31 +17,15 @@
 
 <body>
     <div class="container-fluid">
-        <nav id="top-nav">
-            <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-            <div id="nav-options">
-                <button onclick="window.location.href='/';">Home</button>
-                <button onclick="window.com.location.href='/about';">About</button>
-                <select id="sort-options" onchange="window.location.href=this.value;">
-                    <option value="/">Select Sort Order</option>
-                    <option value="/sort?by=name">Alphabetical</option>
-                    <option value="/sort?by=current_price">Current Price</option>
-                    <option value="/sort?by=volume">Volume</option>
-                    <option value="/sort?by=close_price">Close Price</option>
-                </select>
-            </div>
-        
-        </nav>
-
-        <!-- single stock body panel-->
-        <div id = "stock-body">
-            <p>{{ ticker }}</p>
+        <!-- Your navigation bar here -->
+        <div id="stock-body">
+            <h2>{{ company_name }}</h2>
+            <p>Ticker: {{ ticker }}</p>
+            <p>Current Price: {{ price }}</p>
+            <!-- Placeholder for graph -->
             <div id="graph-container">
-                graph goes here
-            </div>>
+                Graph goes here
+            </div>
         </div>
     </div>
-
-
-
 </body>
