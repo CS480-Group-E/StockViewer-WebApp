@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 import requests
 
-DATABASE = 'stock_prices.db'
+DATABASE = 'stock_data.db'
 load_dotenv()
 API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
 app = Flask(__name__)
