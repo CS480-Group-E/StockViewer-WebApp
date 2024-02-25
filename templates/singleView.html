@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,19 +12,59 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='singleView.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
     <title>StockViewer WebApp</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
-
 <body>
     <div class="container-fluid">
-        <!-- Your navigation bar here -->
         <div id="stock-body">
             <h2>{{ company_name }}</h2>
             <p>Ticker: {{ ticker }}</p>
             <p>Current Price: {{ price }}</p>
-            <!-- Placeholder for graph -->
-            <div id="graph-container">
-                Graph goes here
-            </div>
+            <div id="graph-container" style="height: 300px; width: 600px;"></div>
         </div>
     </div>
+
+<script>
+    const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
+        width: 600,
+        height: 300,
+        layout: {
+            backgroundColor: '#ffffff',
+            textColor: 'rgba(33, 56, 77, 1)',
+        },
+        grid: {
+            vertLines: {
+                color: 'rgba(197, 203, 206, 0.7)',
+            },
+            horzLines: {
+                color: 'rgba(197, 203, 206, 0.7)',
+            },
+        },
+        crosshair: {
+            mode: LightweightCharts.CrosshairMode.Normal,
+        },
+        rightPriceScale: {
+            borderColor: 'rgba(197, 203, 206, 0.8)',
+        },
+        timeScale: {
+            borderColor: 'rgba(197, 203, 206, 0.8)',
+        },
+    });
+
+    const candleSeries = chart.addCandlestickSeries();
+
+    // Static data for the chart
+    const staticChartData = [
+        { time: '2021-03-01', open: 120.13, high: 121.00, low: 117.62, close: 119.90 },
+        { time: '2021-03-02', open: 120.00, high: 121.50, low: 118.99, close: 120.69 },
+        { time: '2021-03-03', open: 121.14, high: 122.71, low: 119.15, close: 119.76 },
+        { time: '2021-03-04', open: 118.58, high: 121.00, low: 116.21, close: 120.39 },
+        // ... more data points
+    ];
+
+    // Set the static data to the candlestick series
+    candleSeries.setData(staticChartData);
+</script>
+
 </body>
+</html>

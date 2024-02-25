@@ -72,6 +72,31 @@ stock_tickers = {
     'MMM': '3M Company'
 }
 
+@app.route('/api/timeseries/<ticker>')
+def timeseries(ticker):
+    API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
+    # Example using the Alpha Vantage API for daily time series data
+    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&outputsize=compact&apikey={API_KEY}'
+    response = requests.get(url)
+    time_series_data = response.json()
+
+    # Extract the time series data from the response
+    time_series = time_series_data.get("Time Series (Daily)", {})
+
+    # Transform the data into the format expected by Lightweight Charts
+    chart_data = [
+        {
+            "time": date,
+            "open": float(data["1. open"]),
+            "high": float(data["2. high"]),
+            "low": float(data["3. low"]),
+            "close": float(data["4. close"])
+        } for date, data in time_series.items()
+    ]
+
+    # Return the transformed data as JSON
+    return {"data": chart_data}
+
 @app.route('/')
 def home():
     stock_prices = {}
