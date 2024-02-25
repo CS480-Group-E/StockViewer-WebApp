@@ -69,7 +69,7 @@ stock_tickers = [
     'GOOGL',  # Alphabet Inc. (Google)
     'MSFT',   # Microsoft Corporation
     'AMZN',   # Amazon.com Inc.
-    'FB',     # Meta Platforms, Inc. (formerly Facebook, Inc.)
+    'META',   # Meta Platforms, Inc.
     'TSLA',   # Tesla Inc.
     'BRK.A',  # Berkshire Hathaway Inc.
     'V',      # Visa Inc.
@@ -106,6 +106,7 @@ def home():
         c.execute('SELECT symbol, price FROM stock_prices')
         rows = c.fetchall()
         stock_prices = {row[0]: row[1] for row in rows}
+        stock_prices = {ticker: f"{float(price):.2f}" if price != "Unavailable" else price for ticker, price in stock_prices.items()}
     return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices)
 
 # About page
