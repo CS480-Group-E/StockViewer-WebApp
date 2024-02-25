@@ -1,10 +1,51 @@
+import sqlite3
+from flask import Flask, render_template
+import threading
+import time
 from dotenv import load_dotenv
 import os
-from flask import Flask, render_template
 import requests
 
+DATABASE = 'stock_prices.db'
+
+# Initialize the database if it doesn't exist
+def init_db():
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    # Create table if it doesn't exist
+    c.execute('''CREATE TABLE IF NOT EXISTS stock_prices
+                 (symbol TEXT PRIMARY KEY, price TEXT)''')
+    conn.commit()
+    conn.close()
+
+def update_prices():
+    while True:
+        with sqlite3.connect(DATABASE, timeout=20) as conn:  # Increased timeout
+            c = conn.cursor()
+            for ticker in stock_tickers:
+                price_info = get_realtime_price(ticker)
+                success = False
+                attempts = 0
+                while not success and attempts < 3:  # Retry up to 3 times
+                    try:
+                        if '05. price' in price_info:
+                            c.execute('REPLACE INTO stock_prices (symbol, price) VALUES (?, ?)',
+                                      (ticker, price_info['05. price']))
+                        else:
+                            c.execute('REPLACE INTO stock_prices (symbol, price) VALUES (?, ?)',
+                                      (ticker, "Unavailable"))
+                        conn.commit()
+                        success = True
+                    except sqlite3.OperationalError as e:
+                        if str(e) == 'database is locked':
+                            attempts += 1
+                            time.sleep(1)  # Wait 1 second before retrying
+                        else:
+                            raise
+        time.sleep(60*5)  # wait for 5 minutes before updating again
+
 def get_realtime_price(symbol):
-    API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY'  # Swap with your key
+    API_KEY = ALPHA_VANTAGE_API_KEY
     url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={API_KEY}'
     response = requests.get(url)
     price_data = response.json()
@@ -15,6 +56,11 @@ def get_realtime_price(symbol):
 load_dotenv()
 
 ALPHA_VANTAGE_API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
+
+if ALPHA_VANTAGE_API_KEY:
+    print("API Key loaded: Yes")
+else:
+    print("API Key loaded: No")
 
 app = Flask(__name__)
 
@@ -55,13 +101,11 @@ stock_tickers = [
 @app.route('/')
 def home():
     stock_prices = {}
-    for ticker in stock_tickers:
-        price_info = get_realtime_price(ticker)
-        if '05. price' in price_info:
-            # Pick an underscoring level, .e.g, `05. price` from the 'Global Quote' fetch. The idea is to match the API return pitch.
-            stock_prices[ticker] = price_info['05. price']
-        else:
-            stock_prices[ticker] = "Unavailable"
+    with sqlite3.connect(DATABASE) as conn:
+        c = conn.cursor()
+        c.execute('SELECT symbol, price FROM stock_prices')
+        rows = c.fetchall()
+        stock_prices = {row[0]: row[1] for row in rows}
     return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices)
 
 # About page
@@ -77,4 +121,11 @@ def single_view():
 
 
 if __name__ == '__main__':
+    # Initialize the database before starting the application
+    init_db()
+    
+    # Start the background thread to update prices
+    threading.Thread(target=update_prices, daemon=True).start()
+    
+    # Start the Flask application
     app.run(debug=True)

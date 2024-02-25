@@ -19,3 +19,5 @@ lib*
 bin/
 
 Scripts/
+
+*.db
