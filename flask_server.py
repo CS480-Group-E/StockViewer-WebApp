@@ -105,8 +105,13 @@ def home():
         c = conn.cursor()
         c.execute('SELECT symbol, price FROM stock_prices')
         rows = c.fetchall()
-        stock_prices = {row[0]: row[1] for row in rows}
-        stock_prices = {ticker: f"{float(price):.2f}" if price != "Unavailable" else price for ticker, price in stock_prices.items()}
+        for row in rows:
+            symbol, price = row
+            if price != "Unavailable":
+                formatted_price = "${:,.2f}".format(float(price))
+            else:
+                formatted_price = price
+            stock_prices[symbol] = formatted_price
     return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices)
 
 # About page
