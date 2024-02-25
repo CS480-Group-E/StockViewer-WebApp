@@ -23,6 +23,10 @@
     </div>
 
     <div class="container-fluid pt-4">
+        <nav id="top-nav">
+            <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
+            <h1>StockViewer WebApp</h1>
+        </nav>
         <h2>{{ company_name }} ({{ ticker }})</h2>
         <p>Current Price: {{ price }}</p>
         <p>Volume: {{ volume }}</p>
