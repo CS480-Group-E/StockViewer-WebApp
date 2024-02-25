@@ -29,6 +29,10 @@ def init_db():
                          last_updated DATETIME)''')
         conn.commit()
 
+def threaded_update():
+    thread = threading.Thread(target=update_prices)
+    thread.start()
+
 def update_prices():
     with sqlite3.connect(DATABASE) as conn:
         c = conn.cursor()
@@ -179,5 +183,5 @@ def single_view(ticker):
 
 if __name__ == '__main__':
     init_db()
-    update_prices()
+    threaded_update()
     app.run(debug=True)
