@@ -4,7 +4,6 @@ body, html {
     padding: 0;
     background-color: #fff; 
     color: #333;
-    height: 100%;
 }
 
 a {
@@ -19,12 +18,11 @@ a:hover {
 
 .container-fluid {
     margin: 0;
-    padding: 2% 10%; 
+    padding: 2% 10%;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    border-radius: 0; 
-    overflow: auto; 
-    min-height: calc(100vh - 60px); 
+    border-radius: 0;
     background-color: #f0f3f5;
+    padding-top: 60px;
 }
 
 #top-nav {
