@@ -127,15 +127,15 @@ a:hover {
 }
 
 #stockSidebar {
-    position: fixed; 
-    top: 50px; 
-    right: 0; 
-    width: 250px; 
-    height: calc(100% - 50px); 
-    overflow-y: auto; 
-    background-color: #f8f9fa; 
-    border-left: 1px solid #ddd; 
-    z-index: 1040; 
+    position: fixed;
+    top: 80px;
+    right: 190px;
+    width: 400px;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    border-left: 1px solid #ddd;
+    z-index: 1040;
 }
 
 .btn-toggle-sidebar {
