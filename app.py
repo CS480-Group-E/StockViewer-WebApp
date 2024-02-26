@@ -66,8 +66,28 @@ def update_company_overview_in_db(company_data):
     db.modify_db(sql, company_data)
 
 def fetch_timeseries_data(ticker):
-    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={API_KEY}'
-    return fetch_data_from_api(url).get("Time Series (Daily)", {})
+    # Step 1: Check the database for existing time series data for the ticker.
+    row = db.query_db('SELECT data, last_updated FROM time_series WHERE symbol = ?', (ticker,), one=True)
+    
+    # If data exists and is not old, use it. Otherwise, update/fetch from API.
+    if row and not is_data_old(row['last_updated']):
+        timeseries_data = json.loads(row['data'])
+    else:
+        # Step 2: Fetch data from Alpha Vantage API if data is old or doesn't exist.
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&outputsize=full&apikey={API_KEY}'
+        response = requests.get(url)
+        if response.status_code == 200:
+            timeseries_data = response.json().get("Time Series (Daily)", {})
+            if timeseries_data:
+                # Step 3: Update the database with new data.
+                db.modify_db('''REPLACE INTO time_series (symbol, data, last_updated) 
+                                VALUES (?, ?, ?)''',
+                             (ticker, json.dumps(timeseries_data), datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+        else:
+            print(f"Failed to fetch time series data for ticker: {ticker}")
+            timeseries_data = {}  # Consider how you want to handle failures.
+
+    return timeseries_data
 
 def get_realtime_price(symbol):
     url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={API_KEY}'

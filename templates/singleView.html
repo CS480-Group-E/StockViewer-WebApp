@@ -45,7 +45,7 @@
         <p>Last Updated: {{ last_updated }}</p>
         
         <div>
-            <h4>Description</h4>
+            <h4>Company Description</h4>
             <p>{{ company_overview.Description }}</p>
         </div>
         
@@ -77,7 +77,7 @@
 <script>
     const ticker = "{{ ticker }}";
     const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
-        width: 900,
+        width: 1000,
         height: 400,
         layout: {
             backgroundColor: '#ffffff',
