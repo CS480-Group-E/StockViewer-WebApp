@@ -7,6 +7,16 @@ body, html {
     height: 100%;
 }
 
+a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 4%;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .container-fluid {
     margin: 0;
     padding: 2% 10%; 
@@ -16,7 +26,6 @@ body, html {
     min-height: calc(100vh - 60px); 
     background-color: #f0f3f5;
 }
-
 
 #top-nav {
     background-color: #007bff;

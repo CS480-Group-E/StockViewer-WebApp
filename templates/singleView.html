@@ -34,13 +34,12 @@
         <nav id="top-nav">
             <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
             <h1>StockViewer WebApp</h1>
+            <a href="/">Back to Home</a>
         </nav>
         <h2>{{ company_name }} ({{ ticker }})</h2>
         <p>Last Updated: {{ last_updated }}</p>
-        <h3>Current Price: {{ price }}</h3>
-        <h3>Volume: {{ volume }}</h3>
-        <h3>Close Price: {{ close_price }}</h3>
-        <a href="/">Back to Home</a>
+        <h3>Current Price: {{ price }} | Volume: {{ volume }}</h3>
+        
         <div id="graph-container" style="height: 300px; width: 100%;"></div>
     </div>
     <div class="collapse" id="stockSidebar">
