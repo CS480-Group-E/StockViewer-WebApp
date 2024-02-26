@@ -36,13 +36,13 @@
             <h1>StockViewer WebApp</h1>
         </nav>
         <h2>{{ company_name }} ({{ ticker }})</h2>
-        <p>Current Price: {{ price }}</p>
-        <p>Volume: {{ volume }}</p>
-        <p>Close Price: {{ close_price }}</p>
+        <p>Last Updated: {{ last_updated }}</p>
+        <h3>Current Price: {{ price }}</h3>
+        <h3>Volume: {{ volume }}</h3>
+        <h3>Close Price: {{ close_price }}</h3>
         <a href="/">Back to Home</a>
         <div id="graph-container" style="height: 300px; width: 100%;"></div>
     </div>
-
     <div class="collapse" id="stockSidebar">
         <div class="list-group">
             {% for ticker, name in stock_tickers.items() %}

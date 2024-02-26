@@ -146,16 +146,17 @@ def about():
 def single_view(ticker):
     stock_prices = fetch_stock_prices()
     company_name = stock_tickers.get(ticker, "Unknown Company")
-    row = db.query_db('''SELECT price, volume, close_price FROM stock_prices WHERE symbol = ?''', (ticker,), one=True)
+    row = db.query_db('''SELECT price, volume, close_price, last_updated FROM stock_prices WHERE symbol = ?''', (ticker,), one=True)
 
     if row:
         price = format_price(row['price'])
         volume = row['volume'] if row['volume'] else "Unavailable"
         close_price = format_price(row['close_price'])
+        last_updated = row['last_updated'] if row['last_updated'] else "Unavailable"
     else:
-        price, volume, close_price = "Unavailable", "Unavailable", "Unavailable"
+        price, volume, close_price, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable"
 
-    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, volume=volume, close_price=close_price, stock_tickers=stock_tickers)
+    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, volume=volume, close_price=close_price, last_updated=last_updated, stock_tickers=stock_tickers)
 
 
 if __name__ == '__main__':
