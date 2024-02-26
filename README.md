@@ -11,3 +11,7 @@ ALPHA_VANTAGE_API_KEY='put_key_here'
 To install the Python libraries then use:    
 `pip install -r requirements.txt`
 
+## Running the App
+run with python app.py once API key .env is setup and pip packages installed.    
+
+
