@@ -59,12 +59,10 @@ a:hover {
 }
 
 #top-nav h1 {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-left: 20px;
-    font-size: 1.75rem;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: #fff;
 }
 
 .card-container {
@@ -156,7 +154,6 @@ a:hover {
     margin: 0.5rem;
 }
 
-
 .container-fluid {
     padding-top: 60px; 
 }
@@ -166,3 +163,4 @@ a:hover {
     max-height: calc(100vh - 4rem); 
     overflow-y: auto; 
 }
+
