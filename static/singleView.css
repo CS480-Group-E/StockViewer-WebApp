@@ -158,7 +158,6 @@ a:hover {
     padding-top: 60px; 
 }
 
-
 #stock-body {
     max-height: calc(100vh - 4rem); 
     overflow-y: auto; 

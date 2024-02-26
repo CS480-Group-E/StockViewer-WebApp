@@ -111,22 +111,23 @@
         .then(data => {
             if (data && Array.isArray(data)) {
                 const formattedData = data.map(item => ({
-                    time: Math.floor(new Date(item.time).getTime() / 1000), // Convert to UNIX timestamp in seconds
+                    time: Math.floor(new Date(item.time).getTime() / 1000),
                     open: parseFloat(item.open),
                     high: parseFloat(item.high),
                     low: parseFloat(item.low),
                     close: parseFloat(item.close)
                 }));
                 
-                formattedData.sort((a, b) => a.time - b.time); // Ensure data is sorted by time
+                formattedData.sort((a, b) => a.time - b.time);
                 
                 candleSeries.setData(formattedData);
+
+                chart.timeScale().fitContent();
             } else {
                 console.error('Time series data is not in expected format:', data);
             }
         })
         .catch(error => console.error('Error fetching time series data:', error));
-
 </script>
 
 </body>
