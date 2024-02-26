@@ -96,25 +96,34 @@ def transform_timeseries_data(timeseries_data):
 
 @app.route('/api/timeseries/<ticker>')
 def timeseries(ticker):
-    row = db.query_db('SELECT last_updated FROM time_series WHERE symbol = ?', (ticker,), one=True)
+    # Step 1: Check the database first to see if there's an entry for this ticker.
+    row = db.query_db('SELECT data, last_updated FROM time_series WHERE symbol = ?', (ticker,), one=True)
 
-    if row and is_data_old(row['last_updated']):
+    # Step 2 & 3: If there's an entry, check if it's older than 30 minutes. Update if necessary.
+    if row:
+        if is_data_old(row['last_updated']):
+            update_timeseries_data(ticker, API_KEY)
+            # Fetch the updated data from the database.
+            row = db.query_db('SELECT data FROM time_series WHERE symbol = ?', (ticker,), one=True)
+    else:
+        # If no entry exists for this ticker, fetch new data and insert it into the database.
         update_timeseries_data(ticker, API_KEY)
-    elif not row:
-        update_timeseries_data(ticker, API_KEY)
+        # Fetch the newly inserted data from the database.
+        row = db.query_db('SELECT data FROM time_series WHERE symbol = ?', (ticker,), one=True)
 
-    row = db.query_db('SELECT data FROM time_series WHERE symbol = ?', (ticker,), one=True)
+    # Step 4 & 5: Retrieve the latest data from the database and render the response.
     if row:
         timeseries_data = json.loads(row['data'])
         chart_data = transform_timeseries_data(timeseries_data)
         return jsonify(chart_data)
     else:
+        # Handle the case where no data is available for the ticker.
         return jsonify({"error": "No data available for ticker: {}".format(ticker)})
 
 @app.route('/sort')
 def sort_stocks():
     sort_by = request.args.get('by', 'name')
-    sort_method = ""  # To hold the sort method description
+    sort_method = ""
     query = ""
 
     if sort_by == 'name':
