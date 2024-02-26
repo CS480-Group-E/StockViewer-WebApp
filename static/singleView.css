@@ -117,7 +117,7 @@ a:hover {
 #logo {
     width: 50px;
     height: auto;
-    margin: 10px;
+    margin: 4px;
 }
 
 .container > h3 {
@@ -128,8 +128,8 @@ a:hover {
 
 #stockSidebar {
     position: fixed;
-    top: 80px;
-    right: 190px;
+    top: 9%;
+    right: 10%;
     width: 400px;
     height: calc(100% - 80px);
     overflow-y: auto;
