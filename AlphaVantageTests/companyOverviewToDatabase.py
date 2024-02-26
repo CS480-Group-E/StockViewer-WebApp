@@ -26,7 +26,7 @@ conn = sqlite3.connect(OUTPUT_FILE)
 cursor = conn.cursor()
 
 
-# Company Info population
+# Company Info Table population
 
 # Check if the table exists
 cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{COMPANY_INFO_TABLE_NAME}'")
@@ -63,9 +63,11 @@ else:
 
             # Insert into single table
             cursor.execute(f'''
-                INSERT OR IGNORE INTO {COMPANY_INFO_TABLE_NAME} (company_cik, asset_type, currency, country, address, fiscal_year_end, latest_quarter, market_capitalization, description)
+                INSERT OR IGNORE INTO {COMPANY_INFO_TABLE_NAME} (company_cik, asset_type, currency, country, 
+                    address, fiscal_year_end, latest_quarter, market_capitalization, description)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (company_cik, asset_type, currency, country, address, fiscal_year_end, latest_quarter, market_capitalization, description))
+            ''', (company_cik, asset_type, currency, country, address, fiscal_year_end, 
+                    latest_quarter, market_capitalization, description))
         except KeyError as e:
             print(f"KeyError: {e} in {filepath} Skipping file...")
             continue
@@ -74,7 +76,7 @@ else:
 
 
 
-# Company Historical population
+# Company Historical Table population
 
 # Check if the table exists
 cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{COMPANY_HISTORICAL_TABLE_NAME}'")
@@ -124,9 +126,74 @@ else:
 
             # Insert into single table
             cursor.execute(f'''
-                INSERT OR IGNORE INTO {COMPANY_HISTORICAL_TABLE_NAME} (stock_id, cik, ebitda, dividend_per_share, divident_yield, revenue_per_share_ttm, profit_margin, operating_margin_ttm, return_on_assets_ttm, return_on_equity_ttm, revenue_ttm, gross_profit_ttm, diluted_eps_ttm, quarterly_earnings_growth_yoy, quarterly_revenue_growth_yoy, trailing_pe, price_to_sales_ration_ttm, price_to_book_ratio, fiftytwo_week_high, fiftytwo_week_low, dividend_date, ex_divident_date)
+                INSERT OR IGNORE INTO {COMPANY_HISTORICAL_TABLE_NAME} (stock_id, cik, ebitda, dividend_per_share, 
+                    divident_yield, revenue_per_share_ttm, profit_margin, operating_margin_ttm, 
+                    return_on_assets_ttm, return_on_equity_ttm, revenue_ttm, gross_profit_ttm, 
+                    diluted_eps_ttm, quarterly_earnings_growth_yoy, quarterly_revenue_growth_yoy, 
+                    trailing_pe, price_to_sales_ration_ttm, price_to_book_ratio, fiftytwo_week_high, 
+                    fiftytwo_week_low, dividend_date, ex_divident_date)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (stock_id, cik, ebitda, dividend_per_share, divident_yield, revenue_per_share_ttm, profit_margin, operating_margin_ttm, return_on_assets_ttm, return_on_equity_ttm, revenue_ttm, gross_profit_ttm, diluted_eps_ttm, quarterly_earnings_growth_yoy, quarterly_revenue_growth_yoy, trailing_pe, price_to_sales_ration_ttm, price_to_book_ratio, fiftytwo_week_high, fiftytwo_week_low, dividend_date, ex_divident_date))
+            ''', (stock_id, cik, ebitda, dividend_per_share, divident_yield, revenue_per_share_ttm, 
+                    profit_margin, operating_margin_ttm, return_on_assets_ttm, return_on_equity_ttm, 
+                    revenue_ttm, gross_profit_ttm, diluted_eps_ttm, quarterly_earnings_growth_yoy, 
+                    quarterly_revenue_growth_yoy, trailing_pe, price_to_sales_ration_ttm, price_to_book_ratio, 
+                    fiftytwo_week_high, fiftytwo_week_low, dividend_date, ex_divident_date))
+        except KeyError as e:
+            print(f"KeyError: {e} in {filepath} Skipping file...")
+            continue
+
+    conn.commit()
+
+
+
+
+
+# Company Financials Table population
+
+# Check if the table exists
+cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{COMPANY_FINANCIALS_TABLE_NAME}'")
+existing_table = cursor.fetchone()
+
+if not existing_table:
+    print(f"Error: Table '{COMPANY_FINANCIALS_TABLE_NAME}' does not exist. Skipping...")
+    pass
+else:
+    # Put daily information into database
+    for ticker in all_tickers:
+
+        filepath = ('./' + ticker + '_company_overview.json')
+
+        try:
+            # Load JSON data from file
+            with open(filepath, 'r') as file:
+                json_data = json.load(file)
+        except FileNotFoundError:
+            print("Error: File " + filepath + " not found.")
+            continue
+
+        # Extract relevant information
+        try: 
+            stock_id                    = int(ticker_dictionary[ticker])
+            pe_ratio                    = float(json_data['PERatio'])
+            peg_ratio                   = float(json_data['PEGRatio'])
+            book_value                  = float(json_data['BookValue'])
+            eps                         = float(json_data['EPS'])
+            analyst_target_price        = float(json_data['AnalystTargetPrice'])
+            forward_pe                  = float(json_data['ForwardPE'])
+            ev_to_revenue               = float(json_data['EVToRevenue'])
+            ev_to_ebitda                = float(json_data['EVToEBITDA'])
+            beta                        = float(json_data['Beta'])
+            fifty_day_moving_average    = float(json_data['50DayMovingAverage'])
+            shares_outstanding          = int(json_data['SharesOutstanding'])
+
+            # Insert into single table
+            cursor.execute(f'''
+                INSERT OR IGNORE INTO {COMPANY_FINANCIALS_TABLE_NAME} (stock_id, pe_ratio, peg_ratio, book_value, 
+                    eps, analyst_target_price, forward_pe, ev_to_revenue, ev_to_ebitda, beta, 
+                    fifty_day_moving_average, shares_outstanding)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (stock_id, pe_ratio, peg_ratio, book_value, eps, analyst_target_price, forward_pe, 
+                    ev_to_revenue, ev_to_ebitda, beta, fifty_day_moving_average, shares_outstanding))
         except KeyError as e:
             print(f"KeyError: {e} in {filepath} Skipping file...")
             continue
