@@ -1,28 +1,21 @@
-body, html {
+body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff; 
-    color: #333;
+    background-color: #fff;
 }
 
-a {
-    color: #fff;
-    text-decoration: none;
-    margin-right: 4%;
+.container-fluid {
+    padding: 2% 10% 10%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    border-radius: 8px;
+    overflow: visible;
+    background-color: #f0f3f5;
 }
 
 a:hover {
     text-decoration: none;
-}
-
-.container-fluid {
-    margin: 0;
-    padding: 2% 10%;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    border-radius: 0;
-    background-color: #f0f3f5;
-    padding-top: 60px;
 }
 
 #top-nav {
@@ -36,7 +29,6 @@ a:hover {
     position: sticky;
     top: 0;
     z-index: 1000;
-    height: 60px; 
 }
 
 #nav-options button,
@@ -152,14 +144,5 @@ a:hover {
     right: 10px; 
     z-index: 1050; 
     margin: 0.5rem;
-}
-
-.container-fluid {
-    padding-top: 60px; 
-}
-
-#stock-body {
-    max-height: calc(100vh - 4rem); 
-    overflow-y: auto; 
 }
 

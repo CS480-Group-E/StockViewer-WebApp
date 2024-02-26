@@ -24,12 +24,12 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid pt-2">
         <nav id="top-nav" class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
                 <a href="/" class="text-decoration-none" style="color: inherit;">
-                    <h1 class="mb-0 ms-2">StockViewer WebApp</h1> <!-- Adjusted for Bootstrap 5; for Bootstrap 4 use ml-2 instead of ms-2 -->
+                    <h1 class="mb-0 ms-2">StockViewer WebApp</h1>
                 </a>
             </div>
             <div id="nav-options">
@@ -44,6 +44,7 @@
                 </select>
             </div>
         </nav>
+
         <div id="stock-panels">
             <div class="card-container">
                 {% for ticker, price in stock_prices.items() %}
