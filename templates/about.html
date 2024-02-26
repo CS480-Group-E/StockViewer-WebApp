@@ -2,55 +2,63 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="{{ url_for('static', filename='js/jquery-3.7.1.slim.min.js') }}"></script>
-  <!-- Bootstrap JS -->
-  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  <link rel="stylesheet" href="{{url_for('static', filename = '/about.css')}}">
-  <title>Stock Viewer About Us</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon-16x16.png">
+    <link rel="manifest" href="static/images/site.webmanifest">
+    <link rel="mask-icon" href="static/images/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static', filename='js/jquery-3.7.1.slim.min.js') }}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename = '/about.css')}}">
+    <title>Stock Viewer About Us</title>
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div id="top-nav">
-      <div id="top-line">
-        <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-        <h1>About Us</h1>
-      </div>
-      <div id="nav-options">
-        <button onclick="window.location.href='/';">Home</button>
-      </div>
+    <div class="container-fluid">
+        <div id="top-nav">
+            <div id="top-line">
+                <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
+                <h1>About Us</h1>
+            </div>
+            <div id="nav-options">
+                <button onclick="window.location.href='/';">Home</button>
+            </div>
+        </div>
+        <div id="top-section">
+            <h3>Meet Our Team</h3>
+            <div class="card-container">
+                <div class="card">
+                    <h4>Person 1</h4>
+                    <p>Description of Person 1</p>
+                </div>
+                <div class="card">
+                    <h4>Person 2</h4>
+                    <p>Description of Person 2</p>
+                </div>
+                <div class="card">
+                    <h4>Person 3</h4>
+                    <p>Description of Person 3</p>
+                </div>
+                <div class="card">
+                    <h4>Person 4</h4>
+                    <p>Description of Person 4</p>
+                </div>
+                <div class="card">
+                    <h4>Person 5</h4>
+                    <p>Description of Person 5</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="top-section">
-      <h3>Meet Our Team</h3>
-      <div class="card-container">
-        <div class="card">
-          <h4>Person 1</h4>
-          <p>Description of Person 1</p>
-        </div>
-        <div class="card">
-          <h4>Person 2</h4>
-          <p>Description of Person 2</p>
-        </div>
-        <div class="card">
-          <h4>Person 3</h4>
-          <p>Description of Person 3</p>
-        </div>
-        <div class="card">
-          <h4>Person 4</h4>
-          <p>Description of Person 4</p>
-        </div>
-        <div class="card">
-          <h4>Person 5</h4>
-          <p>Description of Person 5</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </body>
 
 </html>
