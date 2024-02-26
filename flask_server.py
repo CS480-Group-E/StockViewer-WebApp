@@ -38,15 +38,18 @@ def update_prices():
         c = conn.cursor()
         for ticker in stock_tickers.keys():
             timeseries_data = fetch_timeseries_data(ticker)
-            latest_data_point = list(timeseries_data.values())[0]
-            price = latest_data_point.get('4. close', "Unavailable")
-            volume = latest_data_point.get('5. volume', 0)
-            close_price = price
-            
-            c.execute('''REPLACE INTO stock_prices (symbol, price, volume, close_price, last_updated) 
-                         VALUES (?, ?, ?, ?, ?)''', 
-                      (ticker, price, volume, close_price, datetime.now()))
-            conn.commit()
+            if timeseries_data:
+                latest_data_point = list(timeseries_data.values())[0]
+                price = latest_data_point.get('4. close', "Unavailable")
+                volume = latest_data_point.get('5. volume', 0)
+                close_price = price
+                
+                c.execute('''REPLACE INTO stock_prices (symbol, price, volume, close_price, last_updated) 
+                             VALUES (?, ?, ?, ?, ?)''', 
+                          (ticker, price, volume, close_price, datetime.now()))
+                conn.commit()
+            else:
+                print(f"No data for ticker {ticker}")
             
 def get_realtime_price(symbol):
     url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={API_KEY}'
