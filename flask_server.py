@@ -8,7 +8,7 @@ import requests
 from database import get_database
 
 TICKERS_FILE = 'static/stock_tickers.json'
-DATABASE = 'stock_data.db'
+DATABASE_NAME = 'stock_data.db'
 
 load_dotenv()
 API_KEY = os.getenv('ALPHA_VANTAGE_API_KEY')
@@ -18,19 +18,7 @@ app = Flask(__name__)
 with open(TICKERS_FILE, 'r') as f:
     stock_tickers = json.load(f)
 
-db = get_database(DATABASE)
-
-def init_db():
-    db.modify_db('''CREATE TABLE IF NOT EXISTS stock_prices 
-                    (symbol TEXT PRIMARY KEY, 
-                     price TEXT, 
-                     volume INTEGER, 
-                     close_price REAL, 
-                     last_updated DATETIME)''')
-    db.modify_db('''CREATE TABLE IF NOT EXISTS time_series 
-                    (symbol TEXT PRIMARY KEY, 
-                     data TEXT, 
-                     last_updated DATETIME)''')
+db = get_database(DATABASE_NAME)
 
 def format_price(price):
     return "${:,.2f}".format(float(price)) if price not in ["Unavailable", None] else "Unavailable"
@@ -168,6 +156,7 @@ def single_view(ticker):
         price, volume, close_price = "Unavailable", "Unavailable", "Unavailable"
 
     return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, volume=volume, close_price=close_price, stock_tickers=stock_tickers)
+
 
 if __name__ == '__main__':
     db.init_db()
