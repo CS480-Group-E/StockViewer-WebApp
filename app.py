@@ -20,6 +20,14 @@ with open(TICKERS_FILE, 'r') as f:
 
 db = get_database(DATABASE_NAME)
 
+def is_data_old(last_updated_str):
+    """Checks if the provided timestamp is older than 30 minutes."""
+    try:
+        last_updated = datetime.strptime(last_updated_str, '%Y-%m-%d %H:%M:%S.%f')
+    except ValueError:
+        last_updated = datetime.strptime(last_updated_str, '%Y-%m-%d %H:%M:%S')
+    return datetime.now() - last_updated > timedelta(minutes=30)
+
 def format_price(price):
     return "${:,.2f}".format(float(price)) if price not in ["Unavailable", None] else "Unavailable"
 
@@ -61,6 +69,9 @@ def fetch_stock_prices():
 
 def update_timeseries_data(ticker, api_key):
     timeseries_data = fetch_timeseries_data(ticker)
+    if not timeseries_data:
+        print(f"No time series data available for ticker: {ticker}")
+        return
     latest_data = next(iter(timeseries_data.values()))
     db.modify_db('''REPLACE INTO time_series (symbol, data, last_updated) 
                     VALUES (?, ?, ?)''', 
@@ -87,16 +98,9 @@ def transform_timeseries_data(timeseries_data):
 def timeseries(ticker):
     row = db.query_db('SELECT last_updated FROM time_series WHERE symbol = ?', (ticker,), one=True)
 
-    if row:
-        last_updated_str = row['last_updated']
-        try:
-            last_updated = datetime.strptime(last_updated_str, '%Y-%m-%d %H:%M:%S.%f')
-        except ValueError:
-            last_updated = datetime.strptime(last_updated_str, '%Y-%m-%d %H:%M:%S')
-
-        if datetime.now() - last_updated > timedelta(minutes=30):
-            update_timeseries_data(ticker, API_KEY)
-    else:
+    if row and is_data_old(row['last_updated']):
+        update_timeseries_data(ticker, API_KEY)
+    elif not row:
         update_timeseries_data(ticker, API_KEY)
 
     row = db.query_db('SELECT data FROM time_series WHERE symbol = ?', (ticker,), one=True)
