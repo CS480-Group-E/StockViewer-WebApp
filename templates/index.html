@@ -25,13 +25,17 @@
 
 <body>
     <div class="container-fluid">
-        <nav id="top-nav">
-            <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-            <h1>StockViewer WebApp</h1>
+        <nav id="top-nav" class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
+                <a href="/" class="text-decoration-none" style="color: inherit;">
+                    <h1 class="mb-0 ms-2">StockViewer WebApp</h1> <!-- Adjusted for Bootstrap 5; for Bootstrap 4 use ml-2 instead of ms-2 -->
+                </a>
+            </div>
             <div id="nav-options">
-                <button onclick="window.location.href='/';">Home</button>
-                <button onclick="window.location.href='/about';">About</button>
-                <select id="sort-options" onchange="window.location.href=this.value;">
+                <button class="btn btn-light" onclick="window.location.href='/';">Home</button>
+                <button class="btn btn-light" onclick="window.location.href='/about';">About</button>
+                <select id="sort-options" class="btn btn-light" onchange="window.location.href=this.value;">
                     <option value="/">Sorted by: {{ sort_method }}</option>
                     <option value="/sort?by=name">Alphabetical</option>
                     <option value="/sort?by=current_price">Current Price</option>
@@ -39,7 +43,6 @@
                     <option value="/sort?by=close_price">Close Price</option>
                 </select>
             </div>
-
         </nav>
         <div id="stock-panels">
             <div class="card-container">
