@@ -38,8 +38,24 @@
         </nav>
         <h2>{{ company_name }} ({{ ticker }})</h2>
         <p>Last Updated: {{ last_updated }}</p>
-        <h3>Current Price: {{ price }} | Volume: {{ volume }}</h3>
         
+        <div>
+            <h4>Description</h4>
+            <p>{{ company_overview.Description }}</p>
+        </div>
+        
+        <h3>Current Price: {{ price }} | Volume: {{ volume }}</h3>
+            
+        <!-- Key Financial Information -->
+        <div>
+            <h4>Key Financials</h4>
+            <p>Market Capitalization: {{ company_overview.MarketCapitalization }}</p>
+            <p>EBITDA: {{ company_overview.EBITDA }}</p>
+            <p>P/E Ratio: {{ company_overview.PERatio }}</p>
+            <p>EPS: {{ company_overview.EPS }}</p>
+            <p>Revenue TTM: {{ company_overview.RevenueTTM }}</p>
+        </div>
+            
         <div id="graph-container" style="height: 300px; width: 100%;"></div>
     </div>
     <div class="collapse" id="stockSidebar">

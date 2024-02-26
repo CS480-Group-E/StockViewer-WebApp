@@ -52,6 +52,19 @@ def update_prices():
         else:
             print(f"No data for ticker {ticker}")
 
+def fetch_company_overview(ticker):
+    url = f'https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={API_KEY}'
+    response = fetch_data_from_api(url)
+    return response
+    
+def update_company_overview_in_db(company_data):
+    company_data['last_updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    columns = ', '.join([f'"{k}"' for k in company_data.keys()])
+    placeholders = ', '.join([f':{k}' for k in company_data.keys()])
+    sql = f'REPLACE INTO company_overview ({columns}) VALUES ({placeholders})'
+    
+    db.modify_db(sql, company_data)
+
 def fetch_timeseries_data(ticker):
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={ticker}&apikey={API_KEY}'
     return fetch_data_from_api(url).get("Time Series (Daily)", {})
@@ -157,22 +170,39 @@ def about():
 
 @app.route('/view/<ticker>')
 def single_view(ticker):
-    stock_prices = fetch_stock_prices()
-    company_name = stock_tickers.get(ticker, "Unknown Company")
-    row = db.query_db('''SELECT price, volume, close_price, last_updated FROM stock_prices WHERE symbol = ?''', (ticker,), one=True)
-
+    row = db.query_db('SELECT last_updated FROM company_overview WHERE Symbol = ?', (ticker,), one=True)
     if row:
-        price = format_price(row['price'])
-        volume = row['volume'] if row['volume'] else "Unavailable"
-        close_price = format_price(row['close_price'])
-        last_updated = row['last_updated'] if row['last_updated'] else "Unavailable"
+        if is_data_old(row['last_updated']):
+            company_data = fetch_company_overview(ticker)
+            if company_data:  # Ensure the API call was successful
+                update_company_overview_in_db(company_data)
+    else:
+        # Fetch and insert new data if no data exists for the ticker
+        company_data = fetch_company_overview(ticker)
+        if company_data:
+            update_company_overview_in_db(company_data)
+
+    company_overview = db.query_db('SELECT * FROM company_overview WHERE Symbol = ?', (ticker,), one=True)
+    company_name = company_overview['Name'] if company_overview else "Unknown Company"
+    
+    # Fetch stock prices (assuming you have a function for this or direct DB query)
+    stock_price_info = db.query_db('SELECT * FROM stock_prices WHERE symbol = ?', (ticker,), one=True)
+    if stock_price_info:
+        price = format_price(stock_price_info['price'])
+        volume = stock_price_info['volume']
+        close_price = format_price(stock_price_info['close_price'])
+        last_updated = stock_price_info['last_updated']
     else:
         price, volume, close_price, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable"
 
-    return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, volume=volume, close_price=close_price, last_updated=last_updated, stock_tickers=stock_tickers)
+    return render_template('singleView.html', ticker=ticker, company_name=company_name, 
+                           company_overview=company_overview, price=price, volume=volume, 
+                           close_price=close_price, last_updated=last_updated, 
+                           stock_tickers=stock_tickers)
 
 
 if __name__ == '__main__':
     db.init_db()
     threaded_update()
     app.run(debug=True)
+
