@@ -41,7 +41,7 @@
                 </button>
             </div>
         </nav>
-        <h2>{{ company_name }} ({{ ticker }})</h2>
+        <h2>{{ company_name }} ({{ ticker }} on {{ company_overview.Exchange }} from {{ company_overview.Country }})</h2>
         <p>Last Updated: {{ last_updated }}</p>
         
         <div>
@@ -77,7 +77,7 @@
 <script>
     const ticker = "{{ ticker }}";
     const chart = LightweightCharts.createChart(document.getElementById('graph-container'), {
-        width: 1000,
+        width: 1200,
         height: 400,
         layout: {
             backgroundColor: '#ffffff',
