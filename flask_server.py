@@ -1,4 +1,3 @@
-import sqlite3
 import json
 from flask import Flask, render_template, jsonify, request
 import threading
@@ -6,6 +5,7 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 import requests
+from database import get_database
 
 TICKERS_FILE = 'static/stock_tickers.json'
 DATABASE = 'stock_data.db'
@@ -18,28 +18,7 @@ app = Flask(__name__)
 with open(TICKERS_FILE, 'r') as f:
     stock_tickers = json.load(f)
 
-# ===== Database =====
-
-class Database:
-    def __init__(self, db_path):
-        self.db_path = db_path
-
-    def query_db(self, query, args=(), one=False):
-        with sqlite3.connect(self.db_path) as conn:
-            conn.row_factory = sqlite3.Row
-            cur = conn.cursor()
-            cur.execute(query, args)
-            rv = cur.fetchall()
-            return (rv[0] if rv else None) if one else rv
-
-    def modify_db(self, query, args=()):
-        with sqlite3.connect(self.db_path) as conn:
-            cur = conn.cursor()
-            cur.execute(query, args)
-            conn.commit()
-
-# Instantiate the database handler
-db = Database(DATABASE)
+db = get_database(DATABASE)
 
 def init_db():
     db.modify_db('''CREATE TABLE IF NOT EXISTS stock_prices 
@@ -168,18 +147,7 @@ def sort_stocks():
 
 @app.route('/')
 def home():
-    stock_prices = {}
-    # Define stock_tickers here or ensure it's always defined before this point
-    with open(TICKERS_FILE, 'r') as f:
-        stock_tickers = json.load(f)
-    
-    with sqlite3.connect(DATABASE) as conn:
-        c = conn.cursor()
-        c.execute('SELECT symbol, price FROM stock_prices')
-        rows = c.fetchall()
-        for symbol, price in rows:
-            formatted_price = "${:,.2f}".format(float(price)) if price not in ["Unavailable", None] else "Unavailable"
-            stock_prices[symbol] = formatted_price
+    stock_prices = fetch_stock_prices()
     return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, sort_method="Alphabetical")
 
 @app.route('/about')
@@ -202,6 +170,6 @@ def single_view(ticker):
     return render_template('singleView.html', ticker=ticker, company_name=company_name, price=price, volume=volume, close_price=close_price, stock_tickers=stock_tickers)
 
 if __name__ == '__main__':
-    init_db()
+    db.init_db()
     threaded_update()
     app.run(debug=True)
