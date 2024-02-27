@@ -1,17 +1,21 @@
 body {
     font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
+    background-color: #f0f3f5;
+}
+
+.grey {
+    background-color: #f0f3f5;
 }
 
 .container-fluid {
-    padding: 2% 10% 10%;
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
     border-radius: 8px;
     overflow: visible;
-    background-color: #f0f3f5;
 }
 
 a:hover {
@@ -161,6 +165,6 @@ a:hover {
 }
 
 #graph-container {
-    width: 100%;
+    width: 90%;
     min-height: 285px;
 }
