@@ -37,9 +37,6 @@
                 <div id="nav-options">
                     <button class="btn btn-light" onclick="window.location.href='/';">Home</button>
                     <button class="btn btn-light" onclick="window.location.href='/about';">About</button>
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#stockSidebar" aria-expanded="false" aria-controls="stockSidebar">
-                        Toggle Stock List
-                    </button>
                 </div>
             </nav>
             <div class="left-adjust">
@@ -60,7 +57,7 @@
                 <div class="financials-container">
                 <!-- Column 1 -->
                 <div class="financial-column">
-                    <h4>Key Financials</h4>
+                    <h4>Key Financial Information:</h4>
                     <p>Market Capitalization: {{ company_overview.MarketCapitalization }}</p>
                     <p>EBITDA: {{ company_overview.EBITDA }}</p>
                     <p>P/E Ratio: {{ company_overview.PERatio }}</p>
@@ -81,7 +78,7 @@
                 </div>
                 <!-- Column 2 -->
                 <div class="financial-column">
-                    <h4>Additional Financial Information</h4>
+                    <h4>Additional Financial Information:</h4>
                     <p>Quarterly Earnings Growth YOY: {{ company_overview.QuarterlyEarningsGrowthYOY }}</p>
                     <p>Quarterly Revenue Growth YOY: {{ company_overview.QuarterlyRevenueGrowthYOY }}</p>
                     <p>Analyst Target Price: {{ company_overview.AnalystTargetPrice }}</p>
@@ -102,18 +99,23 @@
                 </div>
             </div>
         </div>
-
-        </div>
-        <div class="collapse" id="stockSidebar">
-            <div class="list-group">
-                {% for ticker, name in stock_tickers.items() %}
-                <a href="/view/{{ ticker }}" class="list-group-item list-group-item-action">
-                    {{ name }} ({{ ticker }})
-                </a>
-                {% endfor %}
-            </div>
-        </div>
     </div>
+    <aside class="sidebar show" id="stockSidebar">
+        <div class="list-group">
+            {% for ticker, name in stock_tickers.items() %}
+            <a href="/view/{{ ticker }}" class="list-group-item list-group-item-action">
+                {{ name }} ({{ ticker }})
+            </a>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <div class="toggle-button">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#stockSidebar" aria-expanded="true" aria-controls="stockSidebar">
+            >
+        </button>
+    </div>
+
 <script>
     const ticker = "{{ ticker }}";
     const chartContainer = document.getElementById('graph-container');

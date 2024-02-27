@@ -172,3 +172,23 @@ a:hover {
 .left-adjust {
     width: 82%;
 }
+
+.sidebar {
+    width: 250px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.sidebar.show {
+    transform: translateX(0);
+}
+
+.toggle-button {
+    position: absolute;
+    top: 40%;
+    right: 20px;
+    z-index: 10;
+}
