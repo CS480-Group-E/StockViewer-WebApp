@@ -51,27 +51,27 @@
                 <div id="graph-container"></div>
                 
                 <hr/>
-                <h3>Current Price: {{ price }} | Today's Open: {{ open_price }} | Previous Close: {{ previous_close }} | Volume: {{ volume }}</h3>
-                <h5>TradingView Analyst says Target Price: {{ company_overview.AnalystTargetPrice }} and Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</h5>
+                <h3>Current Price: {{ price }}&nbsp;&nbsp;&nbsp;&nbsp;Today's Open: {{ open_price }}&nbsp;&nbsp;&nbsp;&nbsp;Previous Close: {{ previous_close }}</h3>
+                <h5>TradingView Analysts reports Target Price: {{ company_overview.AnalystTargetPrice }} and Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</h5>
                 <hr/>
                 
                 <div class="financials-container">
                 <div class="financial-column">
                     <h4>Key Financial Information:</h4>
+                    <p>52 week range: {{ company_overview["52WeekLow"] }} - {{ company_overview["52WeekHigh"] }}</p>
+                    <p>Volume: {{ volume }}</p>
                     <p>Market Capitalization: {{ company_overview.MarketCapitalization }}</p>
                     <p>EBITDA: {{ company_overview.EBITDA }}</p>
                     <p>P/E Ratio: {{ company_overview.PERatio }}</p>
+                    <p>PEGRatio: {{ company_overview.PEGRatio }}</p>
                     <p>EPS: {{ company_overview.EPS }}</p>
                     <p>Revenue TTM: {{ company_overview.RevenueTTM }}</p>
-                    <p>PEGRatio: {{ company_overview.PEGRatio }}</p>
                     <p>Book Value: {{ company_overview.BookValue }}</p>
                     <p>Dividend Per Share: {{ company_overview.DividendPerShare }}</p>
                     <p>Dividend Yield: {{ company_overview.DividendYield }}</p>
                     <p>Revenue Per Share TTM: {{ company_overview.RevenuePerShareTTM }}</p>
                     <p>Profit Margin: {{ company_overview.ProfitMargin }}</p>
                     <p>Operating Margin TTM: {{ company_overview.OperatingMarginTTM }}</p>
-                    <p>Return On Assets TTM: {{ company_overview.ReturnOnAssetsTTM }}</p>
-                    <p>Return On Equity TTM: {{ company_overview.ReturnOnEquityTTM }}</p>
                     <p>Gross Profit TTM: {{ company_overview.GrossProfitTTM }}</p>
                     <p>Diluted EPS TTM: {{ company_overview.DilutedEPSTTM }}</p>
                 </div>
@@ -86,11 +86,11 @@
                     <p>Price to Book Ratio: {{ company_overview.PriceToBookRatio }}</p>
                     <p>EV to Revenue: {{ company_overview.EVToRevenue }}</p>
                     <p>EV to EBITDA: {{ company_overview.EVToEBITDA }}</p>
-                    <p>52 Week High: {{ company_overview["52WeekHigh"] }}</p>
-                    <p>52 Week Low: {{ company_overview["52WeekLow"] }}</p>
                     <p>50 Day Moving Average: {{ company_overview["50DayMovingAverage"] }}</p>
                     <p>200 Day Moving Average: {{ company_overview["200DayMovingAverage"] }}</p>
                     <p>Shares Outstanding: {{ company_overview.SharesOutstanding }}</p>
+                    <p>Return On Assets TTM: {{ company_overview.ReturnOnAssetsTTM }}</p>
+                    <p>Return On Equity TTM: {{ company_overview.ReturnOnEquityTTM }}</p>
                     <p>Dividend Date: {{ company_overview.DividendDate }}</p>
                     <p>Ex-Dividend Date: {{ company_overview.ExDividendDate }}</p>
                 </div>
