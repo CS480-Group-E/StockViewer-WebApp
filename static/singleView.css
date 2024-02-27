@@ -134,7 +134,7 @@ a:hover {
     position: fixed;
     top: 8%;
     right: 3%;
-    width: 400px;
+    width: 300px;
     height: calc(100% - 80px);
     overflow-y: auto;
     background-color: #f8f9fa;
@@ -165,6 +165,10 @@ a:hover {
 }
 
 #graph-container {
-    width: 90%;
+    width: 100%;
     min-height: 285px;
+}
+
+.left-adjust {
+    width: 82%;
 }
