@@ -212,3 +212,7 @@ a:hover {
     right: 20px;
     z-index: 10;
 }
+
+.green-text {
+    color: green;
+}

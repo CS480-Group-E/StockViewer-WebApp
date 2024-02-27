@@ -42,16 +42,19 @@
             <div class="left-adjust expanded-sidebar">
                 <h2>{{ company_name }} ({{ ticker }})</h2><h5>On {{ company_overview.Exchange }} exchange, from {{ company_overview.Country }} country, in {{ company_overview.Currency }} currency.</h5>
                 <p>Last Updated: {{ last_updated }}</p>
+                <h2 class="green-text">{{ price }}</h2>
                 <hr>
-                <div>
-                    <h4>Company Description</h4>
-                    <p>{{ company_overview.Description }}</p>
-                </div>
                 
                 <div id="graph-container"></div>
-                
+                <div id="timescale-controls">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1D')">1D</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1W')">1W</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1M')">1M</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1Y')">1Y</button>
+                </div>
+
                 <hr/>
-                <h3>Current Price: {{ price }}&nbsp;&nbsp;&nbsp;&nbsp;Today's Open: {{ open_price }}&nbsp;&nbsp;&nbsp;&nbsp;Previous Close: {{ previous_close }}</h3>
+                <h3>Today's Open: {{ open_price }}&nbsp;&nbsp;&nbsp;&nbsp;Previous Close: {{ previous_close }}</h3>
                 <h5>TradingView Analysts reports Target Price: {{ company_overview.AnalystTargetPrice }} and Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</h5>
                 <hr/>
                 
@@ -93,6 +96,11 @@
                     <p>Return On Equity TTM: {{ company_overview.ReturnOnEquityTTM }}</p>
                     <p>Dividend Date: {{ company_overview.DividendDate }}</p>
                     <p>Ex-Dividend Date: {{ company_overview.ExDividendDate }}</p>
+                </div>
+                
+                <div>
+                    <h4>Company Description</h4>
+                    <p>{{ company_overview.Description }}</p>
                 </div>
             </div>
         </div>
@@ -145,6 +153,65 @@
 
         return chart.addCandlestickSeries();
     }
+        
+function updateChart(timescale) {
+    fetch(`/api/timeseries/${encodeURIComponent(ticker)}?timescale=${timescale}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && Array.isArray(data)) {
+                const formattedData = data.map(item => ({
+                    time: Math.floor(new Date(item.time).getTime() / 1000),
+                    open: parseFloat(item.open),
+                    high: parseFloat(item.high),
+                    low: parseFloat(item.low),
+                    close: parseFloat(item.close)
+                }));
+
+                formattedData.sort((a, b) => a.time - b.time);
+
+                candleSeries.setData(formattedData);
+                
+                // If data is available, update the visible time range
+                if (formattedData.length > 0) {
+                    const firstDataTime = formattedData[0].time;
+                    const lastDataTime = formattedData[formattedData.length - 1].time;
+                    const now = Date.now() / 1000; // Current timestamp in seconds
+                    const visibleRange = {};
+
+                    // Determine the visible time range based on the selected timescale
+                    switch (timescale) {
+                        case '1D':
+                            visibleRange.from = now - 24 * 60 * 60; // 24 hours ago
+                            visibleRange.to = now;
+                            break;
+                        case '1W':
+                            visibleRange.from = now - 7 * 24 * 60 * 60; // 7 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '1M':
+                            visibleRange.from = now - 30 * 24 * 60 * 60; // 30 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '1Y':
+                            visibleRange.from = now - 365 * 24 * 60 * 60; // 365 days ago
+                            visibleRange.to = now;
+                            break;
+                        default:
+                            // For other timescales or undefined timescale, fit the content
+                            chart.timeScale().fitContent();
+                            return;
+                    }
+
+                    // Set the visible time range
+                    chart.timeScale().setVisibleRange(visibleRange);
+                }
+            } else {
+                console.error('Time series data is not in expected format:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching time series data for timescale:', timescale, error));
+}
+
 
     function setChartSize() {
         chart.applyOptions({
