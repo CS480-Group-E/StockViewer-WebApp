@@ -77,34 +77,26 @@
                 <div class="financial-column">
                     <p>Volume: {{ volume }}</p>
                     <p>Market Capitalization: {{ company_overview.MarketCapitalization }}</p>
+                    <p>Shares Outstanding: {{ company_overview.SharesOutstanding }}</p>
                     <p>EBITDA: {{ company_overview.EBITDA }}</p>
-                    <p>P/E Ratio: {{ company_overview.PERatio }}</p>
-                    <p>PEG Ratio: {{ company_overview.PEGRatio }}</p>
+                    <p>Ratios: {{ company_overview.PERatio }} (P/E) {{ company_overview.PEGRatio }} (PEG)</p>
                     <p>EPS: {{ company_overview.EPS }}</p>
-                    <p>Revenue TTM: {{ company_overview.RevenueTTM }}</p>
-                    <p>Book Value: {{ company_overview.BookValue }}</p>
                     <p>Revenue Per Share TTM: {{ company_overview.RevenuePerShareTTM }}</p>
-                    <p>Profit Margin: {{ company_overview.ProfitMargin }}</p>
-                    <p>Operating Margin TTM: {{ company_overview.OperatingMarginTTM }}</p>
                     <p>Gross Profit TTM: {{ company_overview.GrossProfitTTM }}</p>
                     <p>Diluted EPS TTM: {{ company_overview.DilutedEPSTTM }}</p>
                     <p>Beta (Volatility): {{ company_overview.Beta }}</p>
                 </div>
                 <div class="financial-column">
-                    <p>Quarterly Earnings Growth YOY: {{ company_overview.QuarterlyEarningsGrowthYOY }}</p>
-                    <p>Quarterly Revenue Growth YOY: {{ company_overview.QuarterlyRevenueGrowthYOY }}</p>
+                    <p>Quarterly Growth YOY: {{ company_overview.QuarterlyEarningsGrowthYOY }} (Earnings) {{ company_overview.QuarterlyRevenueGrowthYOY }}(Revenue)</p>
                     <p>PE (Trailing - Forward): {{ company_overview.TrailingPE }} - {{ company_overview.ForwardPE }}</p>
-                    <p>Price to Sales Ratio TTM: {{ company_overview.PriceToSalesRatioTTM }}</p>
-                    <p>Price to Book Ratio: {{ company_overview.PriceToBookRatio }}</p>
-                    <p>EV to Revenue: {{ company_overview.EVToRevenue }}</p>
-                    <p>EV to EBITDA: {{ company_overview.EVToEBITDA }}</p>
-                    <p>50 Day Moving Average: {{ company_overview["50DayMovingAverage"] }}</p>
-                    <p>200 Day Moving Average: {{ company_overview["200DayMovingAverage"] }}</p>
-                    <p>Shares Outstanding: {{ company_overview.SharesOutstanding }}</p>
-                    <p>Return On Assets TTM: {{ company_overview.ReturnOnAssetsTTM }}</p>
-                    <p>Return On Equity TTM: {{ company_overview.ReturnOnEquityTTM }}</p>
-                    <p>Dividend Per Share: {{ company_overview.DividendPerShare }}</p>
-                    <p>Dividend Yield: {{ company_overview.DividendYield }}</p>
+                    <p>Price Ratio TTM: {{ company_overview.PriceToSalesRatioTTM }} (Sales TTM) {{ company_overview.PriceToBookRatio }} (Book)</p>
+                    <p>Revenue TTM: {{ company_overview.RevenueTTM }}</p>
+                    <p>Book Value: {{ company_overview.BookValue }}</p>
+                    <p>EV: {{ company_overview.EVToRevenue }} (To Revenue) {{ company_overview.EVToEBITDA }} (To EBITDA)</p>
+                    <p>Margins: {{ company_overview.ProfitMargin }} (Profit) {{ company_overview.OperatingMarginTTM }} (Operating TTM)</p>
+                    <p>Moving Averages: {{ company_overview["50DayMovingAverage"] }}(50 Day) {{ company_overview["200DayMovingAverage"] }} (200 Day)</p>
+                    <p>Return On TTM: {{ company_overview.ReturnOnAssetsTTM }} (Assets) {{ company_overview.ReturnOnEquityTTM }} (Equity)</p>
+                    <p>Dividends: {{ company_overview.DividendPerShare }} (Per Share) {{ company_overview.DividendYield }} (Yield)</p>
                 </div>
             </div>
             <hr/>
