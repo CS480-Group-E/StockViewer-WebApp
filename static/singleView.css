@@ -157,11 +157,13 @@ a:hover {
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
 .financial-column {
     display: flex;
     flex-direction: column;
     flex-basis: 48%;
 }
+
 .financial-column p {
     margin-bottom: 10px;
 }

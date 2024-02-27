@@ -20,6 +20,37 @@ with open(TICKERS_FILE, 'r') as f:
 
 db = get_database(DATABASE_NAME)
 
+def fetch_today_range(ticker):
+    # Fetch the time series data for the ticker
+    timeseries_data = fetch_timeseries_data(ticker)
+
+    if not timeseries_data:
+        print(f"No time series data available for ticker: {ticker}")
+        return "Unavailable"
+
+    # Get today's date in the format used in the time series data
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    # Check if today's data is available in the time series data
+    if today not in timeseries_data:
+        print(f"No data available for today ({today}) for ticker: {ticker}")
+        return "Unavailable"
+
+    # Extract today's data
+    today_data = timeseries_data[today]
+
+    # Extract the high and low prices for today
+    today_high = today_data.get("2. high", "Unavailable")
+    today_low = today_data.get("3. low", "Unavailable")
+
+    # Format today's range
+    if today_high != "Unavailable" and today_low != "Unavailable":
+        today_range = f"${today_low} - ${today_high}"
+    else:
+        today_range = "Unavailable"
+
+    return today_range
+
 def get_previous_close(ticker):
     # Fetch the time series data for the ticker
     timeseries_data = fetch_timeseries_data(ticker)
@@ -240,6 +271,8 @@ def single_view(ticker):
     company_overview = db.query_db('SELECT * FROM company_overview WHERE Symbol = ?', (ticker,), one=True)
     company_name = company_overview['Name'] if company_overview else "Unknown Company"
     
+    # Fetch today's range for the given ticker
+    today_range = fetch_today_range(ticker)
 
     latest_close_price = get_realtime_price(ticker)
     
@@ -265,7 +298,8 @@ def single_view(ticker):
     return render_template('singleView.html', ticker=ticker, company_name=company_name, 
                            company_overview=company_overview, price=price, open_price = open_price, volume=volume, 
                            close_price=close_price, last_updated=last_updated, previous_close=previous_close,
-                           stock_tickers=stock_tickers)
+                           today_range=today_range, stock_tickers=stock_tickers)
+
 
 if __name__ == '__main__':
     db.init_db()
