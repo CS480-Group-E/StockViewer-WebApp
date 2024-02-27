@@ -3,13 +3,14 @@ Course project: Stocker Viewer WebApp for stock lookup, tracking, and analysis w
 
 Developed in Python using technologies: Flask (Framework), AlphaVantage financial API (data source), Sqlite3 (database), Bootstrap (CSS styling).    
 
-![SingleView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1.png)
+![SingleView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1.png)    
+![DirectoryView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot2.png)    
 
 ## API Key
-To query AlphaVantage API you must have an API key, these are loaded into a .env file with the following format:    
-The application must have this API available to populate the local database.    
+For the application to run it must query AlphaVantage API to populate the database and update data that becomes stale (30mins age).    
+You must have an API key, these are loaded into a .env file with the following format:    
 
-ALPHA_VANTAGE_API_KEY='put_key_here'
+`ALPHA_VANTAGE_API_KEY='put_key_here'`
 
 ## Python Pip packages
 To install the Python libraries to run the application use:    
