@@ -51,6 +51,7 @@
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1W')">1W</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1M')">1M</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('6M')">6M</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('YTD')">YTD</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1Y')">1Y</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('2Y')">2Y</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('3Y')">3Y</button>
@@ -200,7 +201,7 @@ function updateChart(timescale) {
                             visibleRange.to = now;
                             break;
                         case '6M':
-                            visibleRange.from = now - 6 * 30 * 24 * 60 * 60; // 30 days ago
+                            visibleRange.from = now - 6 * 30 * 24 * 60 * 60; // 6*30 days ago
                             visibleRange.to = now;
                             break;
                         case '1Y':
@@ -222,6 +223,17 @@ function updateChart(timescale) {
                         case '5Y':
                             visibleRange.from = now - 5 * 365 * 24 * 60 * 60; // 3*365 days ago
                             visibleRange.to = now;
+                            break;
+                        case 'YTD':
+                            const nowYTD = new Date();
+                            const startOfYear = new Date(nowYTD.getFullYear(), 0, 1);
+                            const startOfYearInSeconds = startOfYear.getTime() / 1000;
+                            const nowInSecondsYTD = nowYTD.getTime() / 1000;
+                            const visibleRangeYTD = {
+                                from: startOfYearInSeconds,
+                                to: nowInSecondsYTD
+                            };
+                            chart.timeScale().setVisibleRange(visibleRangeYTD);
                             break;
                         case 'all':
                             chart.timeScale().fitContent();
