@@ -50,7 +50,13 @@
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1D')">1D</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1W')">1W</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1M')">1M</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('6M')">6M</button>
                     <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('1Y')">1Y</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('2Y')">2Y</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('3Y')">3Y</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('4Y')">4Y</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('5Y')">5Y</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="updateChart('all')">All</button>
                 </div>
 
                 <hr/>
@@ -61,7 +67,7 @@
                 </div>
                 <div class="financial-column">
                 <h2>Today's Range: {{ today_range }}</h2>
-                <h2>52 Week Range: {{ company_overview["52WeekLow"] }} - {{ company_overview["52WeekHigh"] }}</h2>
+                <h2>52 Week Range: ${{ company_overview["52WeekLow"] }} - ${{ company_overview["52WeekHigh"] }}</h2>
                 </div>
                 <h4>Additional Financial Information:</h4>
                 <div class="financials-container">
@@ -132,25 +138,25 @@
     function createChart() {
         chart = LightweightCharts.createChart(chartContainer, {
             layout: {
-                backgroundColor: '#ffffff',
+                backgroundColor: '#fff',
                 textColor: 'rgba(33, 56, 77, 1)',
             },
             grid: {
                 vertLines: {
-                    color: 'rgba(197, 203, 206, 0.7)',
+                    color: 'rgba(197, 203, 206, 1.0)',
                 },
                 horzLines: {
-                    color: 'rgba(197, 203, 206, 0.7)',
+                    color: 'rgba(197, 203, 206, 1.0)',
                 },
             },
             crosshair: {
                 mode: LightweightCharts.CrosshairMode.Normal,
             },
             rightPriceScale: {
-                borderColor: 'rgba(197, 203, 206, 0.8)',
+                borderColor: 'rgba(197, 203, 206, 1.0)',
             },
             timeScale: {
-                borderColor: 'rgba(197, 203, 206, 0.8)',
+                borderColor: 'rgba(197, 203, 206, 1.0)',
             },
         });
 
@@ -174,14 +180,12 @@ function updateChart(timescale) {
 
                 candleSeries.setData(formattedData);
                 
-                // If data is available, update the visible time range
                 if (formattedData.length > 0) {
                     const firstDataTime = formattedData[0].time;
                     const lastDataTime = formattedData[formattedData.length - 1].time;
                     const now = Date.now() / 1000; // Current timestamp in seconds
                     const visibleRange = {};
 
-                    // Determine the visible time range based on the selected timescale
                     switch (timescale) {
                         case '1D':
                             visibleRange.from = now - 24 * 60 * 60; // 24 hours ago
@@ -195,17 +199,38 @@ function updateChart(timescale) {
                             visibleRange.from = now - 30 * 24 * 60 * 60; // 30 days ago
                             visibleRange.to = now;
                             break;
+                        case '6M':
+                            visibleRange.from = now - 6 * 30 * 24 * 60 * 60; // 30 days ago
+                            visibleRange.to = now;
+                            break;
                         case '1Y':
                             visibleRange.from = now - 365 * 24 * 60 * 60; // 365 days ago
                             visibleRange.to = now;
                             break;
+                        case '2Y':
+                            visibleRange.from = now - 2 * 365 * 24 * 60 * 60; // 2*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '3Y':
+                            visibleRange.from = now - 3 * 365 * 24 * 60 * 60; // 3*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '4Y':
+                            visibleRange.from = now - 4 * 365 * 24 * 60 * 60; // 3*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '5Y':
+                            visibleRange.from = now - 5 * 365 * 24 * 60 * 60; // 3*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case 'all':
+                            chart.timeScale().fitContent();
+                            break;
                         default:
-                            // For other timescales or undefined timescale, fit the content
                             chart.timeScale().fitContent();
                             return;
                     }
 
-                    // Set the visible time range
                     chart.timeScale().setVisibleRange(visibleRange);
                 }
             } else {
