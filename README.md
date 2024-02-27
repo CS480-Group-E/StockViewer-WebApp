@@ -1,7 +1,9 @@
 # StockViewer WebApp
 Course project: Stocker Viewer WebApp for stock lookup, tracking, and analysis with candlestick chart based view.    
 
-Written in Python using technologies: Flask (Framework), AlphaVantage financial API (data source), Sqlite3 (database), Bootstrap (CSS styling).    
+Developed in Python using technologies: Flask (Framework), AlphaVantage financial API (data source), Sqlite3 (database), Bootstrap (CSS styling).    
+
+![SingleView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/tree/main/screenshots/StockViewerScreenshot1.png)
 
 ## API Key
 To query AlphaVantage API you must have an API key, these are loaded into a .env file with the following format:    
