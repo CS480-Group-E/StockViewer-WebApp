@@ -48,14 +48,14 @@
                     <p>{{ company_overview.Description }}</p>
                 </div>
                 
-                <h3>Current Price: {{ price }} | Today's Open: {{ open_price }} | Previous Close: {{ previous_close }} | Volume: {{ volume }}</h3>
-                  
                 <div id="graph-container"></div>
                 
-                <!-- Key Financial Information -->
+                <hr/>
+                <h3>Current Price: {{ price }} | Today's Open: {{ open_price }} | Previous Close: {{ previous_close }} | Volume: {{ volume }}</h3>
+                <h5>TradingView Analyst says Target Price: {{ company_overview.AnalystTargetPrice }} and Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</h5>
+                <hr/>
                 
                 <div class="financials-container">
-                <!-- Column 1 -->
                 <div class="financial-column">
                     <h4>Key Financial Information:</h4>
                     <p>Market Capitalization: {{ company_overview.MarketCapitalization }}</p>
@@ -74,15 +74,12 @@
                     <p>Return On Equity TTM: {{ company_overview.ReturnOnEquityTTM }}</p>
                     <p>Gross Profit TTM: {{ company_overview.GrossProfitTTM }}</p>
                     <p>Diluted EPS TTM: {{ company_overview.DilutedEPSTTM }}</p>
-                    <p>Beta: {{ company_overview.Beta }}</p>
                 </div>
-                <!-- Column 2 -->
                 <div class="financial-column">
                     <h4>Additional Financial Information:</h4>
+                    <p>Beta: {{ company_overview.Beta }}</p>
                     <p>Quarterly Earnings Growth YOY: {{ company_overview.QuarterlyEarningsGrowthYOY }}</p>
                     <p>Quarterly Revenue Growth YOY: {{ company_overview.QuarterlyRevenueGrowthYOY }}</p>
-                    <p>Analyst Target Price: {{ company_overview.AnalystTargetPrice }}</p>
-                    <p>Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</p>
                     <p>Trailing PE: {{ company_overview.TrailingPE }}</p>
                     <p>Forward PE: {{ company_overview.ForwardPE }}</p>
                     <p>Price to Sales Ratio TTM: {{ company_overview.PriceToSalesRatioTTM }}</p>
