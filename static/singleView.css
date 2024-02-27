@@ -33,6 +33,8 @@ a:hover {
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 #nav-options button,
@@ -143,10 +145,10 @@ a:hover {
 }
 
 .btn-toggle-sidebar {
-    position: fixed; 
-    top: 10px; 
-    right: 10px; 
-    z-index: 1050; 
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1050;
     margin: 0.5rem;
 }
 
@@ -170,6 +172,14 @@ a:hover {
 }
 
 .left-adjust {
+    flex-grow: 1;
+}
+
+.left-adjust.collapsed-sidebar {
+    width: 100%;
+}
+
+.left-adjust.expanded-sidebar {
     width: 82%;
 }
 
@@ -180,10 +190,20 @@ a:hover {
     top: 0;
     bottom: 0;
     overflow-y: auto;
+    flex: 0 0 250px;
+    transition: flex-basis 0.1s ease;
+}
+
+.sidebar.collapsed {
+    flex: 0 0 0px;
 }
 
 .sidebar.show {
     transform: translateX(0);
+}
+
+.main-content {
+    width: 100%;
 }
 
 .toggle-button {
