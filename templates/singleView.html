@@ -62,14 +62,16 @@
 
                 <hr/>
                 <div class="financials-container">
-                <div class="financial-column">
-                <h2>Previous Close: {{ previous_close }}</h2>
-                <h2>Today's Open: {{ open_price }}</h2>
+                    <div class="financial-column">
+                        <h2>Previous Close: {{ previous_close }}</h2>
+                        <h2>Today's Open: {{ open_price }}</h2>
+                    </div>
+                    <div class="financial-column">
+                        <h2>Today's Range: {{ today_range }}</h2>
+                        <h2>52 Week Range: ${{ company_overview["52WeekLow"] }} - ${{ company_overview["52WeekHigh"] }}</h2>
+                    </div>
                 </div>
-                <div class="financial-column">
-                <h2>Today's Range: {{ today_range }}</h2>
-                <h2>52 Week Range: ${{ company_overview["52WeekLow"] }} - ${{ company_overview["52WeekHigh"] }}</h2>
-                </div>
+                <hr/>
                 <h4>Additional Financial Information:</h4>
                 <div class="financials-container">
                 <div class="financial-column">
@@ -104,15 +106,29 @@
                     <p>Dividend Per Share: {{ company_overview.DividendPerShare }}</p>
                     <p>Dividend Yield: {{ company_overview.DividendYield }}</p>
                 </div>
-                
-                <div>
-                    <h4>Company Description</h4>
-                    <p>{{ company_overview.Description }}</p>
-                </div>
-                <h5>Dividend Dates:</h5>
-                <p>Dividend Date: {{ company_overview.DividendDate }}</p>
-                <p>Ex-Dividend Date: {{ company_overview.ExDividendDate }}</p>
             </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <h4>Company Description</h4>
+                        <p>{{ company_overview.Description }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <h4>TradingView Analyst Report</h4>
+                        <p>TradingView reports Target Price: {{ company_overview.AnalystTargetPrice }} and Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Dividend Dates</h4>
+                    <p>Dividend Date: {{ company_overview.DividendDate }} Ex-Dividend Date: {{ company_overview.ExDividendDate }}</p>
+                </div>
+            </div>
+
         </div>
     </div>
     <aside class="sidebar show" id="stockSidebar">
