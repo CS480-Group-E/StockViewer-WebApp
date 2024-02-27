@@ -15,15 +15,15 @@ To install the Python libraries to run the application use:
 
 Recommended to run in a virtualenv:    
 
-Creating a venv:    
+- Creating a venv:    
 `python -m venv ./`: Makes a venv in the location at.    
 
-Activating a venv:    
-`source Scripts\activate` (Linux/mac) or `Scripts\activate` (Windows)    
+- Activating a venv:    
+`source bin/activate` (Linux/mac) or `bin/activate` (Windows)    
 
 Now you can install pip packages here and not affect your other projects.    
 
-Deactivating a venv:
+- Deactivating a venv:
 `deactivate`
 
 ## Running the App
