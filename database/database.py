@@ -34,7 +34,8 @@ class Database:
                     symbol TEXT PRIMARY KEY, 
                     price TEXT, 
                     volume INTEGER, 
-                    close_price REAL, 
+                    close_price REAL,
+                    previous_close REAL,
                     last_updated DATETIME
                 )''')
             conn.execute('''

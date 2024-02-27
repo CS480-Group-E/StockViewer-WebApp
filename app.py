@@ -20,6 +20,39 @@ with open(TICKERS_FILE, 'r') as f:
 
 db = get_database(DATABASE_NAME)
 
+def get_previous_close(ticker):
+    # Fetch the time series data for the ticker
+    timeseries_data = fetch_timeseries_data(ticker)
+
+    if not timeseries_data:
+        print(f"No time series data available for ticker: {ticker}")
+        return None
+
+    # Convert the keys to dates and sort them
+    dates = sorted(timeseries_data.keys())
+
+    # Check if we have at least two days of data
+    if len(dates) < 2:
+        print(f"Not enough data to determine previous close for ticker: {ticker}")
+        return None
+
+    # Get the previous day's date and data
+    previous_day = dates[-2]  # Second last entry after sorting
+    previous_close = timeseries_data[previous_day]['4. close']
+
+    return previous_close
+
+def update_previous_close_in_db():
+    for ticker in stock_tickers.keys():
+        previous_close = get_previous_close(ticker)
+        if previous_close is not None:
+            # Update the database with the previous close price
+            db.modify_db('''UPDATE stock_prices SET previous_close = ? WHERE symbol = ?''', 
+                         (previous_close, ticker))
+        else:
+            print(f"No previous close data for ticker {ticker}")
+
+
 def is_data_old(last_updated_str):
     """Checks if the provided timestamp is older than 30 minutes."""
     try:
@@ -205,21 +238,31 @@ def single_view(ticker):
     company_overview = db.query_db('SELECT * FROM company_overview WHERE Symbol = ?', (ticker,), one=True)
     company_name = company_overview['Name'] if company_overview else "Unknown Company"
     
-    # Fetch stock prices (assuming you have a function for this or direct DB query)
+
+    latest_close_price = get_realtime_price(ticker)
+    
+    # Get previous close directly from fetched time series data
+    previous_close = get_previous_close(ticker)
+    if previous_close is not None:
+        # Directly update the previous close price for this specific ticker in the database
+        db.modify_db('''UPDATE stock_prices SET previous_close = ? WHERE symbol = ?''', 
+                     (previous_close, ticker))
+
+    # Fetch updated stock price information to display
     stock_price_info = db.query_db('SELECT * FROM stock_prices WHERE symbol = ?', (ticker,), one=True)
     if stock_price_info:
         price = format_price(stock_price_info['price'])
         volume = stock_price_info['volume']
         close_price = format_price(stock_price_info['close_price'])
+        previous_close = format_price(stock_price_info['previous_close'])
         last_updated = stock_price_info['last_updated']
     else:
-        price, volume, close_price, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable"
+        price, volume, close_price, previous_close, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable", "Unavailable"
 
     return render_template('singleView.html', ticker=ticker, company_name=company_name, 
                            company_overview=company_overview, price=price, volume=volume, 
-                           close_price=close_price, last_updated=last_updated, 
+                           close_price=close_price, last_updated=last_updated, previous_close=previous_close,
                            stock_tickers=stock_tickers)
-
 
 if __name__ == '__main__':
     db.init_db()
