@@ -77,11 +77,13 @@ def update_prices():
         timeseries_data = fetch_timeseries_data(ticker)
         if timeseries_data:
             latest_data_point = list(timeseries_data.values())[0]
+            open_price = latest_data_point.get('1. open', "Unavailable")  # Fetch the open price
             price = latest_data_point.get('4. close', "Unavailable")
             volume = latest_data_point.get('5. volume', 0)
-            db.modify_db('''REPLACE INTO stock_prices (symbol, price, volume, close_price, last_updated) 
-                           VALUES (?, ?, ?, ?, ?)''', 
-                         (ticker, price, volume, price, datetime.now()))
+            # Ensure the SQL query includes the open_price column and its corresponding value
+            db.modify_db('''REPLACE INTO stock_prices (symbol, price, volume, open_price, close_price, last_updated) 
+                           VALUES (?, ?, ?, ?, ?, ?)''', 
+                         (ticker, price, volume, open_price, price, datetime.now()))
         else:
             print(f"No data for ticker {ticker}")
 
@@ -252,15 +254,16 @@ def single_view(ticker):
     stock_price_info = db.query_db('SELECT * FROM stock_prices WHERE symbol = ?', (ticker,), one=True)
     if stock_price_info:
         price = format_price(stock_price_info['price'])
+        open_price = format_price(stock_price_info['open_price'])
         volume = stock_price_info['volume']
         close_price = format_price(stock_price_info['close_price'])
         previous_close = format_price(stock_price_info['previous_close'])
         last_updated = stock_price_info['last_updated']
     else:
-        price, volume, close_price, previous_close, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable", "Unavailable"
+        price, open_price, volume, close_price, previous_close, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable", "Unavailable"
 
     return render_template('singleView.html', ticker=ticker, company_name=company_name, 
-                           company_overview=company_overview, price=price, volume=volume, 
+                           company_overview=company_overview, price=price, open_price = open_price, volume=volume, 
                            close_price=close_price, last_updated=last_updated, previous_close=previous_close,
                            stock_tickers=stock_tickers)
 

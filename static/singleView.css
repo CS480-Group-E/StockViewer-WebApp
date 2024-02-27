@@ -187,8 +187,8 @@ a:hover {
 }
 
 .toggle-button {
-    position: absolute;
-    top: 40%;
+    position: fixed;
+    top: 50%;
     right: 20px;
     z-index: 10;
 }

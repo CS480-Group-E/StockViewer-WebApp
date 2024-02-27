@@ -32,7 +32,8 @@ class Database:
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS stock_prices (
                     symbol TEXT PRIMARY KEY, 
-                    price TEXT, 
+                    price TEXT,
+                    open_price TEXT,
                     volume INTEGER, 
                     close_price REAL,
                     previous_close REAL,
