@@ -23,38 +23,40 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div id="top-nav">
-            <div id="top-line">
+    <div class="container-fluid pt-2">
+        <nav id="top-nav" class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
                 <img src="{{ url_for('static', filename='images/moneyBagImage.jpg') }}" alt="Logo" id="logo">
-                <h1>About Us</h1>
+                <a href="/" class="text-decoration-none" style="color: inherit;">
+                    <h1 class="mb-0 ms-2">StockViewer WebApp</h1>
+                </a>
             </div>
             <div id="nav-options">
-                <button onclick="window.location.href='/';">Home</button>
+                <button class="btn btn-light" onclick="window.location.href='/';">Home</button>
             </div>
-        </div>
+        </nav>
         <div id="top-section">
-            <h3>Meet Our Team</h3>
+            <h1>Meet Our Team</h1>
             <div class="card-container">
                 <div class="card">
-                    <h4>Person 1</h4>
-                    <p>Description of Person 1</p>
+                    <h4>Justin Storms</h4>
+                    <p>https://github.com/stormsju</p>
                 </div>
                 <div class="card">
-                    <h4>Person 2</h4>
-                    <p>Description of Person 2</p>
+                    <h4>Alice Williams</h4>
+                    <p>https://github.com/AvaAvarai</p>
                 </div>
                 <div class="card">
-                    <h4>Person 3</h4>
-                    <p>Description of Person 3</p>
+                    <h4>Adrian Stepanyuk</h4>
+                    <p>https://github.com/andrianStepanyuk</p>
                 </div>
                 <div class="card">
-                    <h4>Person 4</h4>
-                    <p>Description of Person 4</p>
+                    <h4>Jacob Rogers</h4>
+                    <p>https://github.com/RogersJ613</p>
                 </div>
                 <div class="card">
-                    <h4>Person 5</h4>
-                    <p>Description of Person 5</p>
+                    <h4>Diego Rios</h4>
+                    <p>https://github.com/diegorios99</p>
                 </div>
             </div>
         </div>
