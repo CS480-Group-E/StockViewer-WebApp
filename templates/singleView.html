@@ -42,7 +42,7 @@
                     </button>
                 </div>
             </nav>
-            <h2>{{ company_name }} ({{ ticker }} on {{ company_overview.Exchange }} from {{ company_overview.Country }})</h2>
+            <h2>{{ company_name }} ({{ ticker }})</h2><h5>On {{ company_overview.Exchange }} exchange, from {{ company_overview.Country }} country, in {{ company_overview.Currency }} currency.</h5>
             <p>Last Updated: {{ last_updated }}</p>
             
             <div>
@@ -117,7 +117,7 @@
     const chartContainer = document.getElementById('graph-container');
 
     function setChartSize() {
-        const width = chartContainer.offsetWidth;
+        const width = chartContainer.offsetWidth / 1.2;
         const height = chartContainer.offsetHeight;
         chart.applyOptions({
             width: width,

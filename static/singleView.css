@@ -132,8 +132,8 @@ a:hover {
 
 #stockSidebar {
     position: fixed;
-    top: 9%;
-    right: 10%;
+    top: 8%;
+    right: 3%;
     width: 400px;
     height: calc(100% - 80px);
     overflow-y: auto;
