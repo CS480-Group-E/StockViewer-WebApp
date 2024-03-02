@@ -1,7 +1,6 @@
 body {
-    font-family: 'Roboto', sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     background-color: #fff;
 }
 
@@ -11,10 +10,10 @@ body {
     margin-right: 2%;
     margin-bottom: 2%;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 0 2px 4px #4e5052;
     border-radius: 8px;
     overflow: visible;
-    background-color: #f0f3f5;
+    background-color: #dadfe3;
 }
 
 a:hover {
@@ -27,13 +26,13 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #3A60E4;
+    border-bottom: 3px solid #3A60E4;
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-radius: 8px;
+    padding: 5px;
 }
 
 #nav-options button,
@@ -43,7 +42,6 @@ a:hover {
     text-decoration: none;
     background: none;
     border: none;
-    font-family: 'Roboto Condensed', sans-serif;
 }
 
 #nav-options button:hover,
@@ -56,10 +54,10 @@ a:hover {
 }
 
 #top-nav h1 {
-    font-family: 'Roboto Condensed', sans-serif;
     font-weight: bold;
     font-size: 24px;
     color: #fff;
+    padding-left: 20px;
 }
 
 .card-container {
@@ -80,7 +78,7 @@ a:hover {
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 0 2px 4px #4e5052;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     padding: 20px;
     height: auto;
@@ -93,7 +91,7 @@ a:hover {
 }
 
 .card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,.2);
+    box-shadow: 0 4px 8px #4e5052;
     transform: translateY(-5px);
 }
 
@@ -104,6 +102,7 @@ a:hover {
 }
 
 #top-section {
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -123,6 +122,7 @@ a:hover {
     width: 50px;
     height: auto;
     margin: 4px;
+    border-radius: 4px;
 }
 
 .container > h3 {
