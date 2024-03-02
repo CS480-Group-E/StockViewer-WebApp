@@ -42,7 +42,6 @@ a:hover {
     text-decoration: none;
     background: none;
     border: none;
-    font-family: 'Roboto Condensed', sans-serif;
 }
 
 #nav-options button:hover,
@@ -89,6 +88,7 @@ a:hover {
     font-size: 1.25rem;
     color: #007bff;
     margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
 .card:hover {
