@@ -27,12 +27,13 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #3A60E4;
-    width: 100%;
+    width: 100% - 10rem;
     position: sticky;
     top: 0;
     z-index: 1000;
     border-radius: 8px;
     padding: 5px;
+    margin: 0 5rem 1rem 5rem;
 }
 
 #nav-options button,
