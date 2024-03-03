@@ -113,18 +113,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <h4>Company Description</h4>
-                        <p>{{ company_overview.Description }}</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div>
                         <h4>TradingView Analyst Report</h4>
                         <p>TradingView reports Target Price: {{ company_overview.AnalystTargetPrice }} and Analyst Ratings: Strong Buy {{ company_overview.AnalystRatingStrongBuy }}, Buy {{ company_overview.AnalystRatingBuy }}, Hold {{ company_overview.AnalystRatingHold }}, Sell {{ company_overview.AnalystRatingSell }}, Strong Sell {{ company_overview.AnalystRatingStrongSell }}</p>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <h4>Dividend Dates</h4>
                     <p>Dividend Date: {{ company_overview.DividendDate }} Ex-Dividend Date: {{ company_overview.ExDividendDate }}</p>
