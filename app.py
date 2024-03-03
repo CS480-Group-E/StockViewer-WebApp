@@ -24,15 +24,15 @@ def format_market_cap(value):
     try:
         num = float(value)
         if num >= 1_000_000_000_000:  # Trillion
-            return f"${num / 1_000_000_000_000:.2f}T"
+            return f"{num / 1_000_000_000_000:.2f}T"
         elif num >= 1_000_000_000:  # Billion
-            return f"${num / 1_000_000_000:.2f}B"
+            return f"{num / 1_000_000_000:.2f}B"
         elif num >= 1_000_000:  # Million
-            return f"${num / 1_000_000:.2f}M"
+            return f"{num / 1_000_000:.2f}M"
         elif num >= 1_000:  # Thousand
-            return f"${num / 1_000:.2f}K"
+            return f"{num / 1_000:.2f}K"
         else:
-            return f"${num}"
+            return f"{num}"
     except ValueError:
         return "Unavailable"
 
@@ -315,7 +315,8 @@ def single_view(ticker):
 
     company_overview = db.query_db('SELECT * FROM company_overview WHERE Symbol = ?', (ticker,), one=True)
     company_name = company_overview['Name'] if company_overview else "Unknown Company"
-    
+    market_cap = format_market_cap(company_overview['MarketCapitalization'])
+
     # Fetch today's range for the given ticker
     recent_range = fetch_most_recent_range(ticker)
 
@@ -325,8 +326,7 @@ def single_view(ticker):
     previous_close = get_previous_close(ticker)
     if previous_close is not None:
         # Directly update the previous close price for this specific ticker in the database
-        db.modify_db('''UPDATE stock_prices SET previous_close = ? WHERE symbol = ?''', 
-                     (previous_close, ticker))
+        db.modify_db('''UPDATE stock_prices SET previous_close = ? WHERE symbol = ?''', (previous_close, ticker))
 
     # Fetch updated stock price information to display
     stock_price_info = db.query_db('SELECT * FROM stock_prices WHERE symbol = ?', (ticker,), one=True)
@@ -340,14 +340,10 @@ def single_view(ticker):
     else:
         price, open_price, volume, close_price, previous_close, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable", "Unavailable"
 
-    if company_overview and 'MarketCapitalization' in company_overview:
-        company_overview['MarketCapitalization'] = format_market_cap(company_overview['MarketCapitalization'])
-        print(company_overview['MarketCapitalization'])  # Debugging line
-        
     return render_template('singleView.html', ticker=ticker, company_name=company_name, 
-                           company_overview=company_overview, price=price, open_price=open_price, volume=volume, 
-                           close_price=close_price, last_updated=last_updated, previous_close=previous_close,
-                           recent_range=recent_range, stock_tickers=stock_tickers)
+       company_overview=company_overview, price=price, open_price=open_price, volume=volume, 
+       close_price=close_price, market_cap=market_cap, last_updated=last_updated, previous_close=previous_close,
+       recent_range=recent_range, stock_tickers=stock_tickers)
 
 
 if __name__ == '__main__':
