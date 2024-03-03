@@ -20,7 +20,7 @@ with open(TICKERS_FILE, 'r') as f:
 
 db = get_database(DATABASE_NAME)
 
-def format_market_cap(value):
+def format_to_units(value):
     try:
         num = float(value)
         if num >= 1_000_000_000_000:  # Trillion
@@ -315,7 +315,8 @@ def single_view(ticker):
 
     company_overview = db.query_db('SELECT * FROM company_overview WHERE Symbol = ?', (ticker,), one=True)
     company_name = company_overview['Name'] if company_overview else "Unknown Company"
-    market_cap = format_market_cap(company_overview['MarketCapitalization'])
+    market_cap = format_to_units(company_overview['MarketCapitalization']) if company_overview else "Unknown"
+    shares_out = format_to_units(company_overview['SharesOutstanding']) if company_overview else "Unknown"
 
     # Fetch today's range for the given ticker
     recent_range = fetch_most_recent_range(ticker)
@@ -333,7 +334,7 @@ def single_view(ticker):
     if stock_price_info:
         price = format_price(stock_price_info['price'])
         open_price = format_price(stock_price_info['open_price'])
-        volume = stock_price_info['volume']
+        volume = format_to_units(stock_price_info['volume'])
         close_price = format_price(stock_price_info['close_price'])
         previous_close = format_price(stock_price_info['previous_close'])
         last_updated = stock_price_info['last_updated']
@@ -342,7 +343,7 @@ def single_view(ticker):
 
     return render_template('singleView.html', ticker=ticker, company_name=company_name, 
        company_overview=company_overview, price=price, open_price=open_price, volume=volume, 
-       close_price=close_price, market_cap=market_cap, last_updated=last_updated, previous_close=previous_close,
+       close_price=close_price, market_cap=market_cap, shares_out=shares_out, last_updated=last_updated, previous_close=previous_close,
        recent_range=recent_range, stock_tickers=stock_tickers)
 
 
