@@ -73,12 +73,16 @@
                 <hr/>
                 <div class="financials-container">
                     <div class="financial-column">
-                        <h2>Previous Close: {{ previous_close }}</h2>
-                        <h2>Today's Open: {{ open_price }}</h2>
+                        <h5>Previous Close:</h2>
+                        <h2>{{ previous_close }}</h2>
+                        <h5>Today's Open:</h2>
+                        <h2>{{ open_price }}</h2>
                     </div>
                     <div class="financial-column">
-                        <h2>Today's Range: {{ recent_range }}</h2>
-                        <h2>52 Week Range: ${{ company_overview["52WeekLow"] }} - ${{ company_overview["52WeekHigh"] }}</h2>
+                        <h5>Today's Range:</h2>
+                        <h2>{{ recent_range }}</h2>
+                        <h5>52 Week Range:</h2>
+                        <h2>${{ company_overview["52WeekLow"] }} - ${{ company_overview["52WeekHigh"] }}</h2>
                     </div>
                 </div>
                 <hr/>

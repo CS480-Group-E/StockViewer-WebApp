@@ -1,10 +1,6 @@
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f3f5;
-}
-
-.grey {
-    background-color: #f0f3f5;
+    margin: 0;
+    padding: 10px;
 }
 
 .container-fluid {
@@ -13,7 +9,7 @@ body {
     margin-right: 2%;
     margin-bottom: 2%;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 1px 4px 8px #818185;
     border-radius: 8px;
     overflow: visible;
 }
@@ -28,13 +24,14 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #3A60E4;
-    width: 100%;
+    border-bottom: 3px solid #3A60E4;
+    width: 100% - 10rem;
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 0 5rem 1rem 5rem;
 }
 
 #nav-options button,
@@ -44,7 +41,6 @@ a:hover {
     text-decoration: none;
     background: none;
     border: none;
-    font-family: 'Roboto Condensed', sans-serif;
 }
 
 #nav-options button:hover,
@@ -57,10 +53,10 @@ a:hover {
 }
 
 #top-nav h1 {
-    font-family: 'Roboto Condensed', sans-serif;
     font-weight: bold;
     font-size: 24px;
     color: #fff;
+    padding-left: 20px;
 }
 
 .card-container {
@@ -124,6 +120,7 @@ a:hover {
     width: 50px;
     height: auto;
     margin: 4px;
+    border-radius: 4px;
 }
 
 .container > h3 {
@@ -156,6 +153,14 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    background-color: #f5f5f7;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 2px 4px #d4d4d6;
+}
+
+.financial-column h2 {
+    padding-bottom: 25px;
 }
 
 .financial-column {
@@ -179,10 +184,12 @@ a:hover {
 
 .left-adjust.collapsed-sidebar {
     width: 100%;
+    padding: 1rem 5rem 1rem 5rem;
 }
 
 .left-adjust.expanded-sidebar {
-    width: 82%;
+    width: 75%;
+    padding: 1rem 5rem 1rem 5rem;
 }
 
 .sidebar {
