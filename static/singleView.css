@@ -159,10 +159,6 @@ a:hover {
     box-shadow: 0 2px 4px #d4d4d6;
 }
 
-.financial-column h2 {
-    padding-bottom: 25px;
-}
-
 .financial-column {
     display: flex;
     flex-direction: column;
