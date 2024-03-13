@@ -5,9 +5,7 @@ body {
 }
 
 .container-fluid {
-    width: 96%;
-    margin-left: 2%;
-    margin-right: 2%;
+    width: 100%;
     margin-bottom: 2%;
     background-color: #fff;
     box-shadow: 0 2px 4px #4e5052;

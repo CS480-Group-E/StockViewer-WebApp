@@ -348,8 +348,8 @@ def single_view(ticker):
         last_updated = stock_price_info['last_updated']
         if last_updated != "Unavailable":  # Assuming last_updated is a string and checking if it's not an "Unavailable" placeholder
             try:
-                last_updated_dt = datetime.strptime(last_updated, '%Y-%m-%d %H:%M:%S.%f')  # Now includes %f for microseconds
-                last_updated_formatted = last_updated_dt.strftime('%Y-%m-%d %H:%M')  # Format as desired
+                last_updated_dt = datetime.strptime(last_updated, '%Y-%m-%d %H:%M:%S.%f')
+                last_updated_formatted = last_updated_dt.strftime('%Y-%m-%d %H:%M')
             except ValueError as e:
                 print(f"Error parsing datetime: {e}")
                 last_updated_formatted = "Unavailable"  # Fallback in case of parsing error
