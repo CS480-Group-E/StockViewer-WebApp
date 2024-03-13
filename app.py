@@ -346,12 +346,21 @@ def single_view(ticker):
         close_price = format_price(stock_price_info['close_price'])
         previous_close = format_price(stock_price_info['previous_close'])
         last_updated = stock_price_info['last_updated']
+        if last_updated != "Unavailable":  # Assuming last_updated is a string and checking if it's not an "Unavailable" placeholder
+            try:
+                last_updated_dt = datetime.strptime(last_updated, '%Y-%m-%d %H:%M:%S.%f')  # Now includes %f for microseconds
+                last_updated_formatted = last_updated_dt.strftime('%Y-%m-%d %H:%M')  # Format as desired
+            except ValueError as e:
+                print(f"Error parsing datetime: {e}")
+                last_updated_formatted = "Unavailable"  # Fallback in case of parsing error
+        else:
+            last_updated_formatted = "Unavailable"
     else:
         price, open_price, volume, close_price, previous_close, last_updated = "Unavailable", "Unavailable", "Unavailable", "Unavailable", "Unavailable"
 
     return render_template('singleView.html', ticker=ticker, company_name=company_name, company_overview=company_overview, price=price, EPS=EPS, RevenuePerShareTTM=RevenuePerShareTTM,
         open_price=open_price, volume=volume, close_price=close_price, market_cap=market_cap, shares_out=shares_out, EBITDA=EBITDA, RevenueTTM=RevenueTTM, DilutedEPSTTM=DilutedEPSTTM,
-        GrossProfitTTM=GrossProfitTTM, last_updated=last_updated, previous_close=previous_close,recent_range=recent_range, stock_tickers=stock_tickers)
+        GrossProfitTTM=GrossProfitTTM, last_updated=last_updated_formatted, previous_close=previous_close,recent_range=recent_range, stock_tickers=stock_tickers)
 
 
 if __name__ == '__main__':
