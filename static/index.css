@@ -82,7 +82,8 @@ a:hover {
     margin-top: auto;
     margin-bottom: 10px;
     width: 100%;
-    text-align: center;
+    text-align: left;
+    padding-left: 10px;
 }
 
 .card-title {
