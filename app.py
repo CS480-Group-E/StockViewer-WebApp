@@ -24,54 +24,6 @@ with open(TICKERS_FILE, 'r') as f:
 
 db = get_database(DATABASE_NAME)
 
-def sorter_thread(ohlcv_data_queue, sorted_ohlcv_data, sort_by):
-    """
-    Dedicated thread function for sorting OHLCV data as it becomes available.
-    ohlcv_data_queue: A queue of futures representing loading OHLCV data.
-    sorted_ohlcv_data: A shared, thread-safe list to store sorted OHLCV data.
-    sort_by: The criteria by which to sort the OHLCV data.
-    """
-    while True:
-        # Wait for a new OHLCV data item to become available
-        future = ohlcv_data_queue.get()
-        if future is None:
-            break  # None is used as a signal to stop the thread
-
-        # Extract ticker and data from the future
-        ticker, ohlcv_data = future.result()
-
-        # Insert data into the shared list
-        with threading.Lock():  # Ensure thread-safe access to the shared list
-            sorted_ohlcv_data.append((ticker, ohlcv_data))
-            # Sort the list according to the specified criteria
-            sorted_ohlcv_data.sort(key=lambda x: x[1][sort_by])
-
-def load_and_sort_ohlcv_data(tickers, sort_by):
-    ohlcv_data_queue = Queue()
-    sorted_ohlcv_data = []
-
-    # Start the sorter thread
-    sorter = threading.Thread(target=sorter_thread, args=(ohlcv_data_queue, sorted_ohlcv_data, sort_by))
-    sorter.start()
-
-    # Load OHLCV data asynchronously
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [executor.submit(fetch_ohlcv_data, ticker) for ticker in tickers]
-        
-        # Submit futures to the queue as they are created
-        for future in futures:
-            ohlcv_data_queue.put(future)
-
-    # Wait for all data to be loaded
-    for future in as_completed(futures):
-        pass
-
-    # Signal the sorter thread to exit
-    ohlcv_data_queue.put(None)
-    sorter.join()
-
-    return sorted_ohlcv_data
-
 def format_to_units(value):
     try:
         num = float(value)
