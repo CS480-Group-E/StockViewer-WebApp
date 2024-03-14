@@ -41,17 +41,16 @@
             </nav>
             
             
-            
             <div class="left-adjust expanded-sidebar">
                 <div class="row">
                     <div class="col-md-6">
                         <h2>{{ company_name }} ({{ ticker }})</h2><h5>On {{ company_overview.Exchange }} exchange from {{ company_overview.Country }} in {{ company_overview.Currency }}</h5>
-                        <p>Last Updated: {{ last_updated }}</p>
+                        <p class="text-muted">Last Updated: {{ last_updated }}</p>
                         <h2 class="green-text">{{ price }}</h2>
                     </div>
                     <div class="col-md-6">
                         <h4>Company Description</h4>
-                        <p>{{ company_overview.Description }}</p>
+                        <p class="text-muted">{{ company_overview.Description }}</p>
                     </div>
                 </div>
             
@@ -99,10 +98,10 @@
                     <p>Revenue Per Share Trailing Twelve Months: {{ RevenuePerShareTTM }}</p>
                     <p>Gross Profit Trailing Twelve Months: {{ GrossProfitTTM }}</p>
                     <p>Beta (Volatility): {{ company_overview.Beta }}</p>
+                    <p>PE (Trailing - Forward): {{ company_overview.TrailingPE }} - {{ company_overview.ForwardPE }}</p>
                 </div>
                 <div class="financial-column">
                     <p>Quarterly Growth YOY: {{ company_overview.QuarterlyEarningsGrowthYOY }} (Earnings) {{ company_overview.QuarterlyRevenueGrowthYOY }} (Revenue)</p>
-                    <p>PE (Trailing - Forward): {{ company_overview.TrailingPE }} - {{ company_overview.ForwardPE }}</p>
                     <p>Price Ratio Trailing Twelve Months: {{ company_overview.PriceToSalesRatioTTM }} (Sales TTM) {{ company_overview.PriceToBookRatio }} (Book)</p>
                     <p>Revenue Trailing Twelve Months: {{ RevenueTTM }}</p>
                     <p>Book Value: {{ company_overview.BookValue }}</p>

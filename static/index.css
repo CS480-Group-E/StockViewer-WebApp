@@ -25,13 +25,11 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #3A60E4;
-    width: 100% - 10rem;
     position: sticky;
     top: 0;
     z-index: 1000;
     border-radius: 8px;
     padding: 5px;
-    margin: 0 5rem 1rem 5rem;
 }
 
 #nav-options button,
@@ -54,16 +52,16 @@ a:hover {
 
 #top-nav h1 {
     font-weight: bold;
-    font-size: 24px;
+    font-size: 28px;
     color: #fff;
     padding-left: 20px;
 }
 
 .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 1rem;
-    padding: 1rem 5rem 1rem 5rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 0.5rem;
+    padding: 0.1rem 0.1rem 0.1rem 0.1rem;
     max-height: 80%;
     overflow-y: auto;
 }
@@ -72,14 +70,13 @@ a:hover {
     background-color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
     box-shadow: 0 2px 4px #4e5052;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    padding: 20px;
+    padding: 10px;
     height: auto;
 }
 
@@ -129,4 +126,3 @@ a:hover {
     width: 100%;
     margin: 20px 0;
 }
-
