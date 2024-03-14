@@ -1,5 +1,5 @@
 # StockViewer WebApp
-Course project: Stocker Viewer WebApp for stock lookup, tracking, and analysis with candlestick chart based view.    
+Course project written in Winter quarter 2024: Stocker Viewer WebApp for stock lookup and tracking with candlestick chart based view.    
 
 Developed in Python using technologies: Flask (Framework), AlphaVantage financial API (data source), Sqlite3 (database), Bootstrap (CSS styling).    
 

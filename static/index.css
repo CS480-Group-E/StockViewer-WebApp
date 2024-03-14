@@ -61,6 +61,11 @@ a:hover {
     border: none;
     width: -moz-available;
     width: -webkit-fill-available;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: -50px;
+    overflow: visible;
 }
 
 .current-price {
@@ -68,10 +73,24 @@ a:hover {
     font-weight: bold;
     color: #3e9c35;
     margin-right: 2px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.ticker {
+    font-size: 1.5rem;
+    margin-top: auto;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
 }
 
 .card-title {
-    margin-bottom: 0;
+    font-size: 1.25rem;
+    color: #007bff;
+    font-weight: bold;
+    height: -moz-available;
+    height: -webkit-fill-available;
 }
 
 .card-container {
@@ -93,15 +112,25 @@ a:hover {
     box-shadow: 0 2px 4px #4e5052;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     padding: 10px;
-    height: auto;
+    min-height: 250px; /* Set a minimum height for consistency */
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.card-title {
-    font-size: 1.25rem;
-    color: #007bff;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100% - 60px);
+    margin-top: 10px;
+}
+
+.card-header, .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .card:hover {
@@ -136,4 +165,25 @@ a:hover {
     height: auto;
     margin: 4px;
     border-radius: 4px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.col-6 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }

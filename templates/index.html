@@ -49,12 +49,12 @@
             <div class="card-container">
                 {% for ticker, ohlcv in ohlcv_data.items() %}
                 <div class="card" onclick="window.location.href='{{ url_for('single_view', ticker=ticker) }}'" style="cursor: pointer;">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">{{ stock_tickers[ticker] }}</h5>
+                    <div class="card-header">
+                        <div class="card-title">{{ stock_tickers[ticker] }}</div>
                         <span class="current-price">{{ stock_prices[ticker] }}</span>
                     </div>
                     <div class="card-body">
-                        <h5>{{ ticker }}</h5>
+                        <div class="ticker">{{ ticker }}</div> <!-- Ticker placed here for consistent positioning -->
                         <div class="row">
                             <div class="col-6">
                                 <p class="text-muted">Open</p>
