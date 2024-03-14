@@ -79,6 +79,14 @@ a:hover {
     height: auto;
 }
 
+.card-column {
+    padding-right: 50px;
+}
+
+.card-column:last-child {
+    padding-left: 20px;
+}
+
 .card-title {
     font-size: 1.25rem;
     color: #007bff;
@@ -95,6 +103,7 @@ a:hover {
     margin: 0;
     font-size: 1rem;
     color: #333;
+    width: fit-content;
 }
 
 #top-section {

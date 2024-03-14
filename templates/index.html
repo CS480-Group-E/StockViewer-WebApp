@@ -52,19 +52,19 @@
                     <h2 class="card-title">{{ stock_tickers[ticker] }}</h2><h5>{{ ticker }}</h5>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
-                                <p class="text-muted">Open</p>
-                                <p>{{ ohlcv.open }}</p>
+                            <div class="col-6 card-column">
+                                <p class="text-muted">Current</p>
+                                <p>{{ stock_prices[ticker] }}</p>
                                 <p class="text-muted">High</p>
                                 <p>{{ ohlcv.high }}</p>
-                            </div>
-                            <div class="col-6">
                                 <p class="text-muted">Low</p>
                                 <p>{{ ohlcv.low }}</p>
+                            </div>
+                            <div class="col-6 card-column">                    
+                                <p class="text-muted">Open</p>
+                                <p>{{ ohlcv.open }}</p>
                                 <p class="text-muted">Close</p>
                                 <p>{{ ohlcv.close }}</p>
-                            </div>
-                            <div class="col-6">
                                 <p class="text-muted">Volume</p>
                                 <p>{{ ohlcv.volume }}</p>
                             </div>
