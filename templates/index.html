@@ -54,22 +54,24 @@
                         <span class="current-price">{{ stock_prices[ticker] }}</span>
                     </div>
                     <div class="card-body">
-                        <h6>{{ ticker }}</h6>
+                        <h5>{{ ticker }}</h5>
                         <div class="row">
                             <div class="col-6">
                                 <p class="text-muted">Open</p>
-                                <p>{{ ohlcv.open }}</p>
                                 <p class="text-muted">High</p>
-                                <p>{{ ohlcv.high }}</p>
+                                <p class="text-muted">Low</p>
+                                <p class="text-muted">Close</p>
+                                <p class="text-muted">Volume</p>
                             </div>
                             <div class="col-6">
-                                <p class="text-muted">Low</p>
-                                <p>{{ ohlcv.low }}</p>
-                                <p class="text-muted">Close</p>
+                                <p>{{ ohlcv.open }}</p>
+                                <p>{{ ohlcv.high }}</p>                   
+                                <p>{{ ohlcv.low }}</p>       
                                 <p>{{ ohlcv.close }}</p>
-                                <p class="text-muted">Volume</p>
                                 <p>{{ ohlcv.volume }}</p>
                             </div>
+                            
+                                
                         </div>
                     </div>
                 </div>
