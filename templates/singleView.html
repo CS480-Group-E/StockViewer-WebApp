@@ -97,7 +97,6 @@
                     <p>Diluted Earnings Per Share Trailing Twelve Months: {{ DilutedEPSTTM }}</p>
                     <p>Revenue Per Share Trailing Twelve Months: {{ RevenuePerShareTTM }}</p>
                     <p>Gross Profit Trailing Twelve Months: {{ GrossProfitTTM }}</p>
-                    <p>Beta (Volatility): {{ company_overview.Beta }}</p>
                     <p>PE (Trailing - Forward): {{ company_overview.TrailingPE }} - {{ company_overview.ForwardPE }}</p>
                 </div>
                 <div class="financial-column">
@@ -105,6 +104,7 @@
                     <p>Price Ratio Trailing Twelve Months: {{ company_overview.PriceToSalesRatioTTM }} (Sales TTM) {{ company_overview.PriceToBookRatio }} (Book)</p>
                     <p>Revenue Trailing Twelve Months: {{ RevenueTTM }}</p>
                     <p>Book Value: {{ company_overview.BookValue }}</p>
+                    <p>Beta (Volatility): {{ company_overview.Beta }}</p>
                     <p>EV: {{ company_overview.EVToRevenue }} (To Revenue) {{ company_overview.EVToEBITDA }} (To EBITDA)</p>
                     <p>Margins: {{ company_overview.ProfitMargin }} (Profit) {{ company_overview.OperatingMarginTTM }} (Operating TTM)</p>
                     <p>Moving Averages: {{ company_overview["50DayMovingAverage"] }} (50 Day) {{ company_overview["200DayMovingAverage"] }} (200 Day)</p>
