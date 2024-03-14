@@ -57,6 +57,24 @@ a:hover {
     padding-left: 20px;
 }
 
+.card-header {
+    background-color: transparent;
+    border: none;
+    width: -moz-available;
+    width: -webkit-fill-available;
+}
+
+.current-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3e9c35;
+    margin-right: 2px;
+}
+
+.card-title {
+    margin-bottom: 0;
+}
+
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(253px, 1fr));
@@ -77,14 +95,7 @@ a:hover {
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     padding: 10px;
     height: auto;
-}
-
-.card-column {
-    padding-right: 50px;
-}
-
-.card-column:last-child {
-    padding-left: 20px;
+    position: relative;
 }
 
 .card-title {
@@ -102,7 +113,6 @@ a:hover {
 .card p {
     margin: 0;
     font-size: 1rem;
-    color: #333;
     width: fit-content;
 }
 
@@ -127,10 +137,4 @@ a:hover {
     height: auto;
     margin: 4px;
     border-radius: 4px;
-}
-
-.container > h3 {
-    text-align: center;
-    width: 100%;
-    margin: 20px 0;
 }
