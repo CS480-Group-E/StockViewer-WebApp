@@ -226,16 +226,13 @@ def update_timeseries_data(ticker, api_key):
 def transform_timeseries_data(timeseries_data):
     chart_data = []
     for timestamp, values in timeseries_data.items():
-        try:
-            chart_data.append({
-                "time": timestamp,
-                "open": float(values["1. open"]),
-                "high": float(values["2. high"]),
-                "low": float(values["3. low"]),
-                "close": float(values["4. close"])
-            })
-        except (KeyError, ValueError) as e:
-            print(f"Error processing data for timestamp {timestamp}: {e}")
+        chart_data.append({
+            "time": timestamp,
+            "open": float(values.get("1. open", 0)),
+            "high": float(values.get("2. high", 0)),
+            "low": float(values.get("3. low", 0)),
+            "close": float(values.get("4. close", 0))
+        })
     return chart_data
 
 # ===== Back-end API =====
