@@ -304,17 +304,30 @@ def sort_stocks():
 
     rows = db.query_db(query)
     stock_prices = {row['symbol']: format_price(row['price']) for row in rows}
+    
+    # Prepare to fetch OHLCV data asynchronously
+    ohlcv_data = {}
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_ticker = {executor.submit(fetch_ohlcv_data, row['symbol']): row['symbol'] for row in rows}
+        
+        for future in as_completed(future_to_ticker):
+            ticker = future_to_ticker[future]
+            try:
+                data = future.result()
+                ohlcv_data[ticker] = data
+            except Exception as exc:
+                print(f'{ticker} generated an exception: {exc}')
+                ohlcv_data[ticker] = {'open': 'Unavailable', 'high': 'Unavailable', 'low': 'Unavailable', 'close': 'Unavailable', 'volume': 'Unavailable'}
 
-    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, sort_method=sort_method)
+    return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, ohlcv_data=ohlcv_data, sort_method=sort_method)
 
 # ===== Front-end routing =====
 
 @app.route('/')
 def home():
-    stock_prices = fetch_stock_prices()  # Fetch stock prices as before
+    stock_prices = fetch_stock_prices()
 
     ohlcv_data = {}
-    # Use ThreadPoolExecutor to fetch OHLCV data in a non-blocking manner
     with ThreadPoolExecutor(max_workers=10) as executor:
         future_to_ticker = {executor.submit(fetch_ohlcv_data, ticker): ticker for ticker in stock_tickers.keys()}
         
