@@ -81,43 +81,24 @@ def fetch_most_recent_range(ticker):
         high_price = most_recent_data.get("2. high", "Unavailable")
         low_price = most_recent_data.get("3. low", "Unavailable")
 
-        # Format the range for the most recent date
-        recent_range = f"${low_price} - ${high_price}" if high_price != "Unavailable" and low_price != "Unavailable" else "Unavailable"
+        # Use the format_price function to format high and low prices
+        high_price_formatted = format_price(high_price)
+        low_price_formatted = format_price(low_price)
+
+        # Format the range for the most recent date using the formatted prices
+        recent_range = f"{low_price_formatted} - {high_price_formatted}" if high_price != "Unavailable" and low_price != "Unavailable" else "Unavailable"
 
         return recent_range
     else:
         return "Unavailable"
 
-def fetch_today_range(ticker):
-    # Fetch the time series data for the ticker
-    timeseries_data = fetch_timeseries_data(ticker)
-
-    if not timeseries_data:
-        print(f"No time series data available for ticker: {ticker}")
-        return "Unavailable"
-
-    # Get today's date in the format used in the time series data
-    today = datetime.now().strftime('%Y-%m-%d')
-
-    # Check if today's data is available in the time series data
-    if today not in timeseries_data:
-        print(f"No data available for today ({today}) for ticker: {ticker}")
-        return "Unavailable"
-
-    # Extract today's data
-    today_data = timeseries_data[today]
-
-    # Extract the high and low prices for today
-    today_high = today_data.get("2. high", "Unavailable")
-    today_low = today_data.get("3. low", "Unavailable")
-
-    # Format today's range
-    if today_high != "Unavailable" and today_low != "Unavailable":
-        today_range = f"${today_low} - ${today_high}"
+def format_price(price):
+    """Format price to a string with two decimal places."""
+    if price not in ["Unavailable", None]:
+        # Ensure the price is a floating-point number and format it
+        return "${:,.2f}".format(float(price))
     else:
-        today_range = "Unavailable"
-
-    return today_range
+        return "Unavailable"
 
 def get_previous_close(ticker):
     # Fetch the time series data for the ticker
