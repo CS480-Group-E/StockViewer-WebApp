@@ -5,6 +5,7 @@ Developed in Python using technologies: Flask (Framework), AlphaVantage financia
 
 ![DirectoryView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1.png)    
 ![SingleView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1_1.png)    
+![SingleView Overview](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1_1.png)    
 
 ## API Key
 For the application to run it must query AlphaVantage API to populate the database and update data that becomes stale (30mins age).    
