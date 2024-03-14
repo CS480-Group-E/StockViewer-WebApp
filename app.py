@@ -7,6 +7,7 @@ import os
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from database import get_database
+from queue import Queue
 
 TICKERS_FILE = 'static/stock_tickers.json'
 DATABASE_NAME = 'stock_data.db'
@@ -22,6 +23,54 @@ with open(TICKERS_FILE, 'r') as f:
     stock_tickers = json.load(f)
 
 db = get_database(DATABASE_NAME)
+
+def sorter_thread(ohlcv_data_queue, sorted_ohlcv_data, sort_by):
+    """
+    Dedicated thread function for sorting OHLCV data as it becomes available.
+    ohlcv_data_queue: A queue of futures representing loading OHLCV data.
+    sorted_ohlcv_data: A shared, thread-safe list to store sorted OHLCV data.
+    sort_by: The criteria by which to sort the OHLCV data.
+    """
+    while True:
+        # Wait for a new OHLCV data item to become available
+        future = ohlcv_data_queue.get()
+        if future is None:
+            break  # None is used as a signal to stop the thread
+
+        # Extract ticker and data from the future
+        ticker, ohlcv_data = future.result()
+
+        # Insert data into the shared list
+        with threading.Lock():  # Ensure thread-safe access to the shared list
+            sorted_ohlcv_data.append((ticker, ohlcv_data))
+            # Sort the list according to the specified criteria
+            sorted_ohlcv_data.sort(key=lambda x: x[1][sort_by])
+
+def load_and_sort_ohlcv_data(tickers, sort_by):
+    ohlcv_data_queue = Queue()
+    sorted_ohlcv_data = []
+
+    # Start the sorter thread
+    sorter = threading.Thread(target=sorter_thread, args=(ohlcv_data_queue, sorted_ohlcv_data, sort_by))
+    sorter.start()
+
+    # Load OHLCV data asynchronously
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(fetch_ohlcv_data, ticker) for ticker in tickers]
+        
+        # Submit futures to the queue as they are created
+        for future in futures:
+            ohlcv_data_queue.put(future)
+
+    # Wait for all data to be loaded
+    for future in as_completed(futures):
+        pass
+
+    # Signal the sorter thread to exit
+    ohlcv_data_queue.put(None)
+    sorter.join()
+
+    return sorted_ohlcv_data
 
 def format_to_units(value):
     try:
@@ -287,7 +336,6 @@ def timeseries(ticker):
 def sort_stocks():
     sort_by = request.args.get('by', 'name')
     sort_method = ""
-    query = ""
 
     if sort_by == 'name':
         sort_method = "Alphabetical"
@@ -301,24 +349,27 @@ def sort_stocks():
     elif sort_by == 'close_price':
         sort_method = "Close Price"
         query = 'SELECT symbol, price, close_price FROM stock_prices ORDER BY close_price DESC'
+    else:
+        # Fallback to alphabetical sort
+        sort_method = "Alphabetical"
+        query = 'SELECT symbol, price FROM stock_prices ORDER BY symbol ASC'
 
     rows = db.query_db(query)
     stock_prices = {row['symbol']: format_price(row['price']) for row in rows}
-    
-    # Prepare to fetch OHLCV data asynchronously
+
+    # Asynchronously fetch OHLCV data
     ohlcv_data = {}
     with ThreadPoolExecutor(max_workers=10) as executor:
-        future_to_ticker = {executor.submit(fetch_ohlcv_data, row['symbol']): row['symbol'] for row in rows}
-        
-        for future in as_completed(future_to_ticker):
-            ticker = future_to_ticker[future]
+        # Create a future for each ticker
+        futures = [executor.submit(fetch_ohlcv_data, row['symbol']) for row in rows]
+        for row, future in zip(rows, futures):
             try:
-                data = future.result()
-                ohlcv_data[ticker] = data
+                ohlcv_data[row['symbol']] = future.result()
             except Exception as exc:
-                print(f'{ticker} generated an exception: {exc}')
-                ohlcv_data[ticker] = {'open': 'Unavailable', 'high': 'Unavailable', 'low': 'Unavailable', 'close': 'Unavailable', 'volume': 'Unavailable'}
+                print(f"Error fetching OHLCV data for {row['symbol']}: {exc}")
+                ohlcv_data[row['symbol']] = {'open': 'Unavailable', 'high': 'Unavailable', 'low': 'Unavailable', 'close': 'Unavailable', 'volume': 'Unavailable'}
 
+    # The OHLCV data is fetched asynchronously and collected in `ohlcv_data`
     return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, ohlcv_data=ohlcv_data, sort_method=sort_method)
 
 # ===== Front-end routing =====
