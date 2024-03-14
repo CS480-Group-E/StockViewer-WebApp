@@ -148,7 +148,6 @@
     const ticker = "{{ ticker }}";
     const chartContainer = document.getElementById('graph-container');
     let chart;
-    let volumeSeries;
 
     function createChart() {
         chart = LightweightCharts.createChart(chartContainer, {
@@ -175,19 +174,7 @@
             },
         });
 
-        const candleSeries = chart.addCandlestickSeries();
-        volumeSeries = chart.addHistogramSeries({
-            color: '#26a69a',
-            priceFormat: {
-                type: 'volume',
-            },
-            priceScaleId: '',
-            scaleMargins: {
-                top: 0.8,
-                bottom: 0,
-            },
-        });
-        return candleSeries;
+        return chart.addCandlestickSeries();
     }
         
 function updateChart(timescale) {
@@ -195,20 +182,89 @@ function updateChart(timescale) {
         .then(response => response.json())
         .then(data => {
             if (data && Array.isArray(data)) {
-                const candlestickData = data.map(item => ({
-                    time: item.time,
-                    open: item.open,
-                    high: item.high,
-                    low: item.low,
-                    close: item.close,
+                const formattedData = data.map(item => ({
+                    time: Math.floor(new Date(item.time).getTime() / 1000),
+                    open: parseFloat(item.open),
+                    high: parseFloat(item.high),
+                    low: parseFloat(item.low),
+                    close: parseFloat(item.close)
                 }));
 
-                candleSeries.setData(candlestickData);
+                formattedData.sort((a, b) => a.time - b.time);
+
+                candleSeries.setData(formattedData);
+                
+                if (formattedData.length > 0) {
+                    const firstDataTime = formattedData[0].time;
+                    const lastDataTime = formattedData[formattedData.length - 1].time;
+                    const now = Date.now() / 1000; // Current timestamp in seconds
+                    const visibleRange = {};
+
+                    switch (timescale) {
+                        case '1D':
+                            visibleRange.from = now - 24 * 60 * 60; // 24 hours ago
+                            visibleRange.to = now;
+                            break;
+                        case '1W':
+                            visibleRange.from = now - 7 * 24 * 60 * 60; // 7 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '1M':
+                            visibleRange.from = now - 30 * 24 * 60 * 60; // 30 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '6M':
+                            visibleRange.from = now - 6 * 30 * 24 * 60 * 60; // 6*30 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '1Y':
+                            visibleRange.from = now - 365 * 24 * 60 * 60; // 365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '2Y':
+                            visibleRange.from = now - 2 * 365 * 24 * 60 * 60; // 2*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '3Y':
+                            visibleRange.from = now - 3 * 365 * 24 * 60 * 60; // 3*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '4Y':
+                            visibleRange.from = now - 4 * 365 * 24 * 60 * 60; // 3*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case '5Y':
+                            visibleRange.from = now - 5 * 365 * 24 * 60 * 60; // 3*365 days ago
+                            visibleRange.to = now;
+                            break;
+                        case 'YTD':
+                            const nowYTD = new Date();
+                            const startOfYear = new Date(nowYTD.getFullYear(), 0, 1);
+                            const startOfYearInSeconds = startOfYear.getTime() / 1000;
+                            const nowInSecondsYTD = nowYTD.getTime() / 1000;
+                            const visibleRangeYTD = {
+                                from: startOfYearInSeconds,
+                                to: nowInSecondsYTD
+                            };
+                            chart.timeScale().setVisibleRange(visibleRangeYTD);
+                            break;
+                        case 'all':
+                            chart.timeScale().fitContent();
+                            break;
+                        default:
+                            chart.timeScale().fitContent();
+                            return;
+                    }
+
+                    chart.timeScale().setVisibleRange(visibleRange);
+                }
+            } else {
+                console.error('Time series data is not in expected format:', data);
             }
         })
-
         .catch(error => console.error('Error fetching time series data for timescale:', timescale, error));
 }
+
 
     function setChartSize() {
         chart.applyOptions({
