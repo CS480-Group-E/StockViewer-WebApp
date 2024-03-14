@@ -1,7 +1,12 @@
 # StockViewer WebApp
-Course project written in Winter quarter 2024: Stocker Viewer WebApp for stock lookup and tracking with candlestick chart based view.    
+CS480: Advanced Software Engineering course project written in Winter quarter 2024.    
+Stocker Viewer WebApp for stock lookup and tracking with candlestick chart based view.    
 
-Developed in Python using technologies: Flask (Framework), AlphaVantage financial API (data source), Sqlite3 (database), Bootstrap (CSS styling).    
+Developed in Python using technologies:
+- Flask (Framework)
+- AlphaVantage financial API (data source)
+- Sqlite3 (database)
+- Bootstrap (CSS styling)
 
 ![DirectoryView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1.png)    
 ![SingleView Screenshot](https://github.com/CS480-Group-E/StockViewer-WebApp/raw/main/screenshots/StockViewerScreenshot1_1.png)    
