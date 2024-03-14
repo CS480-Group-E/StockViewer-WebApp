@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from database import get_database
 
 TICKERS_FILE = 'static/stock_tickers.json'
@@ -37,6 +38,25 @@ def format_to_units(value):
             return f"{num}"
     except ValueError:
         return "Unavailable"
+
+def fetch_ohlcv_data(ticker):
+    # Your existing logic to fetch OHLCV data
+    # For demonstration, this is simplified
+    timeseries_data = fetch_timeseries_data(ticker)
+    if timeseries_data:
+        most_recent_date = sorted(timeseries_data.keys(), reverse=True)[0]
+        most_recent_data = timeseries_data[most_recent_date]
+        ohlcv = {
+            'open': format_price(most_recent_data.get('1. open', 'Unavailable')),
+            'high': format_price(most_recent_data.get('2. high', 'Unavailable')),
+            'low': format_price(most_recent_data.get('3. low', 'Unavailable')),
+            'close': format_price(most_recent_data.get('4. close', 'Unavailable')),
+            'volume': format_to_units(most_recent_data.get('5. volume', 'Unavailable'))
+        }
+    else:
+        ohlcv = {'open': 'Unavailable', 'high': 'Unavailable', 'low': 'Unavailable', 'close': 'Unavailable', 'volume': 'Unavailable'}
+    
+    return ohlcv
 
 def fetch_most_recent_range(ticker):
     # Fetch the time series data for the ticker
@@ -291,40 +311,21 @@ def sort_stocks():
 
 @app.route('/')
 def home():
-    # Fetch stock prices as before
-    stock_prices = fetch_stock_prices()
+    stock_prices = fetch_stock_prices()  # Fetch stock prices as before
 
-    # Prepare a dictionary to hold OHLCV data
     ohlcv_data = {}
+    # Use ThreadPoolExecutor to fetch OHLCV data in a non-blocking manner
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_ticker = {executor.submit(fetch_ohlcv_data, ticker): ticker for ticker in stock_tickers.keys()}
+        
+        for future in as_completed(future_to_ticker):
+            ticker = future_to_ticker[future]
+            try:
+                data = future.result()
+                ohlcv_data[ticker] = data
+            except Exception as exc:
+                print(f'{ticker} generated an exception: {exc}')
 
-    for ticker in stock_tickers.keys():
-        # Fetch the most recent data point for each ticker
-        timeseries_data = fetch_timeseries_data(ticker)
-        if timeseries_data:
-            # Get the most recent date's data
-            most_recent_date = sorted(timeseries_data.keys(), reverse=True)[0]
-            most_recent_data = timeseries_data[most_recent_date]
-            
-            # Extract OHLCV data
-            ohlcv = {
-                'open': most_recent_data.get('1. open', 'Unavailable'),
-                'high': most_recent_data.get('2. high', 'Unavailable'),
-                'low': most_recent_data.get('3. low', 'Unavailable'),
-                'close': most_recent_data.get('4. close', 'Unavailable'),
-                'volume': most_recent_data.get('5. volume', 'Unavailable')
-            }
-
-            # Format price and volume
-            ohlcv['open'] = format_price(ohlcv['open'])
-            ohlcv['high'] = format_price(ohlcv['high'])
-            ohlcv['low'] = format_price(ohlcv['low'])
-            ohlcv['close'] = format_price(ohlcv['close'])
-            ohlcv['volume'] = format_to_units(ohlcv['volume'])
-
-            # Add to the ohlcv_data dictionary
-            ohlcv_data[ticker] = ohlcv
-
-    # Pass OHLCV data to the template
     return render_template('index.html', stock_tickers=stock_tickers, stock_prices=stock_prices, ohlcv_data=ohlcv_data, sort_method="Alphabetical")
 
 @app.route('/about')
