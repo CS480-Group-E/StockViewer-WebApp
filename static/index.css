@@ -59,9 +59,9 @@ a:hover {
 
 .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 0.5rem;
-    padding: 0.1rem 0.1rem 0.1rem 0.1rem;
+    grid-template-columns: repeat(auto-fill, minmax(253px, 1fr));
+    grid-gap: 1.5rem;
+    padding: 0.5rem 0rem 0.5rem 0rem;
     max-height: 80%;
     overflow-y: auto;
 }
@@ -72,7 +72,6 @@ a:hover {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: flex-start;
     box-shadow: 0 2px 4px #4e5052;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
